@@ -15,7 +15,6 @@ import speed from '../../assets/images/types/speed.png'
 import toc from '../../assets/images/types/toc.png'
 import tor from '../../assets/images/types/tor.png'
 
-
 class ThumbnailsItem extends React.Component {
     constructor(props){
       super(props)
@@ -37,7 +36,6 @@ class ThumbnailsItem extends React.Component {
       this._color()
       this._arrow()
       this._animate()
-      this._localNotif()
     }
 
     componentDidUpdate(nextProps){
@@ -191,26 +189,12 @@ class ThumbnailsItem extends React.Component {
           //ticker: "My Notification Ticker", // (optional)
         })
       }
-      PushNotification.localNotification({
-        /* iOS and Android properties */
-        title: thumbnails.name, // (optional)
-        message: thumbnails.type + ' | ' + thumbnails.value + ' ' + thumbnails.unit, // (required)
-        largeIcon: "speed.png", // (optional) default: "ic_launcher"
-        smallIcon: this._getImageFromType(), // (optional) default: "ic_notification" with fallback for "ic_launcher"
-        //actions: '["Yes", "No"]',  // (Android only) See the doc for notification actions to know more
-        subText: "Local stockage | " + thumbnails.states, // (optional) default: none
-        //color: "blue", // (optional) default: system default
-        //ongoing: true, // (optional) set whether this is an "ongoing" notification
-        //importance: 'high', // (optional) set notification importance, default: high
-        //priority: 'high',
-        //ticker: "My Notification Ticker", // (optional)
-      })
     }    
 
     render() {
         const { thumbnails } = this.props;
       return (
-        <TouchableOpacity>
+        <TouchableOpacity onPress={this._localNotif()}>
           <Animated.View style={[{backgroundColor: this.backgroundColor, opacity: this.state.opacity},styles.button, styles.main_container]}>
           <Image style={styles.imageButton} source={this.icons}/>
             <View style={styles.content_container}>
