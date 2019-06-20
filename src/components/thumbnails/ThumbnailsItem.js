@@ -36,6 +36,7 @@ class ThumbnailsItem extends React.Component {
       this._color()
       this._arrow()
       this._animate()
+      this._localNotif()
     }
 
     componentDidUpdate(nextProps){
@@ -153,6 +154,34 @@ class ThumbnailsItem extends React.Component {
       }
     }
 
+    _iconNotif(){
+      const type = this.props.thumbnails.type
+      //console.log(type)
+      if(type === 'temperature'){
+        "ic_temperature"
+      } else if(type === 'hygrometry'){
+        "ic_hygrometry"
+      } else if(type === 'concentration'){
+        "ic_concentration"
+      } else if(type === 'conductivity'){
+        "ic_conductivity"
+      } else if(type === 'flow'){
+        "ic_flow"
+      } else if(type === 'generic'){
+        "ic_generic"
+      } else if(type === 'particles'){
+        "ic_particles"
+      } else if(type === 'pressure'){
+        "ic_pressure"
+      } else if(type === 'speed'){
+        "ic_speed"
+      } else if(type === 'toc'){
+        "ic_toc"
+      } else if(type === 'tor'){
+        "ic_tor"
+      }
+    }
+
     _localNotif() {
       console.log('ok')
       this.value =this.value
@@ -163,8 +192,8 @@ class ThumbnailsItem extends React.Component {
           /* iOS and Android properties */
           title: thumbnails.name, // (optional)
           message: thumbnails.type + ' | ' + thumbnails.value + ' ' + thumbnails.unit, // (required)
-          largeIcon: "speed.png", // (optional) default: "ic_launcher"
-          smallIcon: this._getImageFromType(), // (optional) default: "ic_notification" with fallback for "ic_launcher"
+          largeIcon: this._iconNotif(), // (optional) default: "ic_launcher"
+          smallIcon: "ic_stat_icon_ivtracer", // (optional) default: "ic_notification" with fallback for "ic_launcher"
           //actions: '["Yes", "No"]',  // (Android only) See the doc for notification actions to know more
           subText: "Local stockage | " + thumbnails.states, // (optional) default: none
           //color: "blue", // (optional) default: system default
@@ -194,7 +223,7 @@ class ThumbnailsItem extends React.Component {
     render() {
         const { thumbnails } = this.props;
       return (
-        <TouchableOpacity onPress={this._localNotif()}>
+        <TouchableOpacity>
           <Animated.View style={[{backgroundColor: this.backgroundColor, opacity: this.state.opacity},styles.button, styles.main_container]}>
           <Image style={styles.imageButton} source={this.icons}/>
             <View style={styles.content_container}>
