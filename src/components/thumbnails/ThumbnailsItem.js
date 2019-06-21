@@ -18,11 +18,13 @@ import tor from '../../assets/images/types/tor.png'
 class ThumbnailsItem extends React.Component {
     constructor(props){
       super(props)
-      this.icons = [],
+      this.iconThumbnails = [],
       this.backgroundColor = '#8ee06d',
       this.color = '#fff',
       this.fontStyle = 'normal',
       this.fontWeight = 'normal',
+      this.arrow = 'ic_stat_icon_ivtracer',
+      this.iconNotif = ''
       this.state = {
         opacity: new Animated.Value(1),
       }
@@ -53,27 +55,38 @@ class ThumbnailsItem extends React.Component {
       const type = this.props.thumbnails.type
       //console.log(type)
       if(type === 'temperature'){
-        this.icons = temperature
+        this.iconThumbnails = temperature
+        this.iconNotif = 'ic_temperature'
       } else if(type === 'hygrometry'){
-        this.icons = hygrometry
+        this.iconThumbnails = hygrometry
+        this.iconNotif = 'ic_hygrometry'
       } else if(type === 'concentration'){
-        this.icons = concentration
+        this.iconThumbnails = concentration
+        this.iconNotif = 'ic_concentration'
       } else if(type === 'conductivity'){
-        this.icons = conductivity
+        this.iconThumbnails = conductivity
+        this.iconNotif = 'ic_conductivity'
       } else if(type === 'flow'){
-        this.icons = flow
+        this.iconThumbnails = flow
+        this.iconNotif = 'ic_flow'
       } else if(type === 'generic'){
-        this.icons = generic
+        this.iconThumbnails = generic
+        this.iconNotif = 'ic_generic'
       } else if(type === 'particles'){
-        this.icons = particle
+        this.iconThumbnails = particle
+        this.iconNotif = 'ic_particle'
       } else if(type === 'pressure'){
-        this.icons = pressure
+        this.iconThumbnails = pressure
+        this.iconNotif = 'ic_pressure'
       } else if(type === 'speed'){
-        this.icons = speed
+        this.iconThumbnails = speed
+        this.iconNotif = 'ic_speed'
       } else if(type === 'toc'){
-        this.icons = toc
+        this.iconThumbnails = toc
+        this.iconNotif = 'ic_toc'
       } else if(type === 'tor'){
-        this.icons = tor
+        this.iconThumbnails = tor
+        this.iconNotif = 'ic_tor'
       }
     }
 
@@ -112,10 +125,12 @@ class ThumbnailsItem extends React.Component {
     _arrow(){
       value = this.value       
       if(value.includes('high')){
+        this.arrow = 'ic_arrowup'
         return(
           <Image className="float-sm-right" style={styles.arrow} source={require('../../assets/images/ArrowUp.png')}/>
         )
       } else if(value.includes('low')){
+        this.arrow = 'ic_arrowdown'
         return(
           <Image className="float-sm-right" style={styles.arrow} source={require('../../assets/images/ArrowDown.png')}/>
         )
@@ -183,8 +198,8 @@ class ThumbnailsItem extends React.Component {
     }
 
     _localNotif() {
-      console.log('ok')
-      this.value =this.value
+      console.log('notification')
+      value = this.value
       thumbnails = this.props.thumbnails
       this.lastId++;
       if(this.value.includes('alarm')){
@@ -192,11 +207,11 @@ class ThumbnailsItem extends React.Component {
           /* iOS and Android properties */
           title: thumbnails.name, // (optional)
           message: thumbnails.type + ' | ' + thumbnails.value + ' ' + thumbnails.unit, // (required)
-          largeIcon: this._iconNotif(), // (optional) default: "ic_launcher"
-          smallIcon: "ic_stat_icon_ivtracer", // (optional) default: "ic_notification" with fallback for "ic_launcher"
-          //actions: '["Yes", "No"]',  // (Android only) See the doc for notification actions to know more
+          largeIcon: this.iconNotif, // (optional) default: "ic_launcher"
+          smallIcon: this.arrow, // (optional) default: "ic_notification" with fallback for "ic_launcher"
+          actions: '["Annuler", "Acquitter"]',  // (Android only) See the doc for notification actions to know more
           subText: "Local stockage | " + thumbnails.states, // (optional) default: none
-          //color: "blue", // (optional) default: system default
+          color: "red", // (optional) default: system default
           //ongoing: true, // (optional) set whether this is an "ongoing" notification
           //importance: 'high', // (optional) set notification importance, default: high
           //priority: 'high',
@@ -207,11 +222,11 @@ class ThumbnailsItem extends React.Component {
           /* iOS and Android properties */
           title: thumbnails.name, // (optional)
           message: thumbnails.type + ' | ' + thumbnails.value + ' ' + thumbnails.unit, // (required)
-          largeIcon: "speed.png", // (optional) default: "ic_launcher"
-          smallIcon: this._getImageFromType(), // (optional) default: "ic_notification" with fallback for "ic_launcher"
-          //actions: '["Yes", "No"]',  // (Android only) See the doc for notification actions to know more
+          largeIcon: this.iconNotif, // (optional) default: "ic_launcher"
+          smallIcon: this.arrow, // (optional) default: "ic_notification" with fallback for "ic_launcher"
+          actions: '["Annuler", "Acquitter"]',  // (Android only) See the doc for notification actions to know more
           subText: "Local stockage | " + thumbnails.states, // (optional) default: none
-          //color: "blue", // (optional) default: system default
+          color: "orange", // (optional) default: system default
           //ongoing: true, // (optional) set whether this is an "ongoing" notification
           //importance: 'high', // (optional) set notification importance, default: high
           //priority: 'high',
@@ -225,7 +240,7 @@ class ThumbnailsItem extends React.Component {
       return (
         <TouchableOpacity>
           <Animated.View style={[{backgroundColor: this.backgroundColor, opacity: this.state.opacity},styles.button, styles.main_container]}>
-          <Image style={styles.imageButton} source={this.icons}/>
+          <Image style={styles.imageButton} source={this.iconThumbnails}/>
             <View style={styles.content_container}>
               <View style={styles.header_container}>
                 <Text style={[{color: this.color, fontStyle: this.fontStyle, fontWeight: this.fontWeight},styles.title_text]}>{thumbnails.name}</Text>
