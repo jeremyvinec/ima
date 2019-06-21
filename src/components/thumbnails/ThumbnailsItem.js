@@ -24,7 +24,8 @@ class ThumbnailsItem extends React.Component {
       this.fontStyle = 'normal',
       this.fontWeight = 'normal',
       this.arrow = 'ic_stat_icon_ivtracer',
-      this.iconNotif = ''
+      this.iconNotif = '',
+      this.alarmeType = ''
       this.state = {
         opacity: new Animated.Value(1),
       }
@@ -38,7 +39,7 @@ class ThumbnailsItem extends React.Component {
       this._color()
       this._arrow()
       this._animate()
-      this._localNotif()
+      //this._localNotif()
     }
 
     componentDidUpdate(nextProps){
@@ -126,11 +127,13 @@ class ThumbnailsItem extends React.Component {
       value = this.value       
       if(value.includes('high')){
         this.arrow = 'ic_arrowup'
+        this.alarmeType = 'Alarme haute : '
         return(
           <Image className="float-sm-right" style={styles.arrow} source={require('../../assets/images/ArrowUp.png')}/>
         )
       } else if(value.includes('low')){
         this.arrow = 'ic_arrowdown'
+        this.alarmeType = 'Alarme basse : '
         return(
           <Image className="float-sm-right" style={styles.arrow} source={require('../../assets/images/ArrowDown.png')}/>
         )
@@ -169,34 +172,6 @@ class ThumbnailsItem extends React.Component {
       }
     }
 
-    _iconNotif(){
-      const type = this.props.thumbnails.type
-      //console.log(type)
-      if(type === 'temperature'){
-        "ic_temperature"
-      } else if(type === 'hygrometry'){
-        "ic_hygrometry"
-      } else if(type === 'concentration'){
-        "ic_concentration"
-      } else if(type === 'conductivity'){
-        "ic_conductivity"
-      } else if(type === 'flow'){
-        "ic_flow"
-      } else if(type === 'generic'){
-        "ic_generic"
-      } else if(type === 'particles'){
-        "ic_particles"
-      } else if(type === 'pressure'){
-        "ic_pressure"
-      } else if(type === 'speed'){
-        "ic_speed"
-      } else if(type === 'toc'){
-        "ic_toc"
-      } else if(type === 'tor'){
-        "ic_tor"
-      }
-    }
-
     _localNotif() {
       console.log('notification')
       value = this.value
@@ -205,12 +180,12 @@ class ThumbnailsItem extends React.Component {
       if(this.value.includes('alarm')){
         PushNotification.localNotification({
           /* iOS and Android properties */
-          title: thumbnails.name, // (optional)
-          message: thumbnails.type + ' | ' + thumbnails.value + ' ' + thumbnails.unit, // (required)
+          title: this.alarmeType + thumbnails.name, // (optional)
+          message: thumbnails.type + ' : ' + thumbnails.value + ' ' + thumbnails.unit, // (required)
           largeIcon: this.iconNotif, // (optional) default: "ic_launcher"
           smallIcon: this.arrow, // (optional) default: "ic_notification" with fallback for "ic_launcher"
           actions: '["Annuler", "Acquitter"]',  // (Android only) See the doc for notification actions to know more
-          subText: "Local stockage | " + thumbnails.states, // (optional) default: none
+          subText: "Local stockage : " + thumbnails.states, // (optional) default: none
           color: "red", // (optional) default: system default
           //ongoing: true, // (optional) set whether this is an "ongoing" notification
           //importance: 'high', // (optional) set notification importance, default: high
@@ -220,12 +195,12 @@ class ThumbnailsItem extends React.Component {
       } else if(this.value.includes('prealarm')){
         PushNotification.localNotification({
           /* iOS and Android properties */
-          title: thumbnails.name, // (optional)
-          message: thumbnails.type + ' | ' + thumbnails.value + ' ' + thumbnails.unit, // (required)
+          title: this.alarmeType + thumbnails.name, // (optional)
+          message: thumbnails.type + ' : ' + thumbnails.value + ' ' + thumbnails.unit, // (required)
           largeIcon: this.iconNotif, // (optional) default: "ic_launcher"
           smallIcon: this.arrow, // (optional) default: "ic_notification" with fallback for "ic_launcher"
           actions: '["Annuler", "Acquitter"]',  // (Android only) See the doc for notification actions to know more
-          subText: "Local stockage | " + thumbnails.states, // (optional) default: none
+          subText: "Local stockage : " + thumbnails.states, // (optional) default: none
           color: "orange", // (optional) default: system default
           //ongoing: true, // (optional) set whether this is an "ongoing" notification
           //importance: 'high', // (optional) set notification importance, default: high

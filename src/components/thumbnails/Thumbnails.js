@@ -1,10 +1,7 @@
 import React from 'react'
 import { StyleSheet, View, Text, Image, Button, ActivityIndicator } from 'react-native'
 import ThumbnailsList from './ThumbnailsList'
-
-// Notification
-import NotifService from './NotifService'
-import appConfig from '../app/app.json';
+import Local from '../Local'
 
 // API
 import { getThumbnails } from '../../utils/api/Api'
@@ -14,7 +11,6 @@ class Thumbnails extends React.Component {
     constructor(props){
       super(props)
       this.state = {
-        senderId: appConfig.senderID,
         thumbnails: [],
       };
       this._recoverThumbnails = this._recoverThumbnails.bind(this);
@@ -43,8 +39,10 @@ class Thumbnails extends React.Component {
     }
 
     render(){
+      console.log(this.props)
       return (
         <View style={styles.container}>
+            <Button title='Local' className="float-sm-right" onPress={() => this.props.navigation.navigate('Local')}/>
             <Image style={styles.logo} source={require('../../assets/images/logo.png')}/>
             <View style={styles.spacer}/>
             <View>
@@ -59,21 +57,6 @@ class Thumbnails extends React.Component {
             </View>
         </View>
       )
-    }
-
-    onRegister(token) {
-      Alert.alert("Registered !", JSON.stringify(token));
-      console.log(token);
-      this.setState({ registerToken: token.token, gcmRegistered: true });
-    }
-  
-    onNotif(notif) {
-      console.log(notif);
-      Alert.alert(notif.title, notif.message);
-    }
-  
-    handlePerm(perms) {
-      Alert.alert("Permissions", JSON.stringify(perms));
     }
 }
 
@@ -107,6 +90,9 @@ const styles = StyleSheet.create({
     },
     thumbnails_list : {
       height: '65%'
+    },
+    local: {
+      textAlign: 'right'
     }
 })
 
