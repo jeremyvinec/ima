@@ -39,7 +39,6 @@ class Thumbnails extends React.Component {
     }
 
     render(){
-      console.log(this.props)
       return (
         <View style={styles.container}>
             <Button title='Local' className="float-sm-right" onPress={() => this.props.navigation.navigate('Local')}/>
