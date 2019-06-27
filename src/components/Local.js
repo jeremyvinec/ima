@@ -58,7 +58,7 @@ class Local extends React.Component {
         return(
             <View style={styles.container}>
                 <View style={styles.content_container}>
-                <Text style={styles.title}> CHANGER DE LOCAL </Text>
+                <Text style={styles.title}> PARAMÉTRAGE DU LOCAL </Text>
                     <View style={styles.main_container}>
                         <Text style={styles.text}>Serveur</Text>
                         <TextInput
@@ -81,8 +81,10 @@ class Local extends React.Component {
                             onSubmitEditing={() => this._searchThumbnails()}
                         />
                     </View>
+                    <View style={styles.spacer}/>
                     <Button title='valider'  color="#C4C4C4" onPress={() => this._searchThumbnails()}></Button>
                 </View>
+                <View style={styles.spacer}/>
                 <View style={styles.thumbnails_list}>
                     <ThumbnailsList
                         thumbnails={this.state.thumbnails}
@@ -147,7 +149,10 @@ const styles = StyleSheet.create({
         bottom: 0,
         alignItems: 'center',
         justifyContent: 'center'
-      }
+    },
+    spacer: {
+        height: 10,
+    }
 })
 
 export default Local

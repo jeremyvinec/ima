@@ -10,7 +10,10 @@ const ThumbnailsStackNavigator = createStackNavigator({
         }
     },
     Local: {
-        screen: Local
+        screen: Local,
+        navigationOptions: {
+            title: 'Paramétrage du local'
+        }
     }
 })
 

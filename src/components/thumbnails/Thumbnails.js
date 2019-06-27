@@ -1,7 +1,6 @@
 import React from 'react'
-import { StyleSheet, View, Text, Image, Button, ActivityIndicator } from 'react-native'
+import { StyleSheet, View, Text, Image, Button, TouchableHighlight } from 'react-native'
 import ThumbnailsList from './ThumbnailsList'
-import Local from '../Local'
 
 // API
 import { getThumbnails } from '../../utils/api/Api'
@@ -39,20 +38,22 @@ class Thumbnails extends React.Component {
     }
 
     render(){
-      return (
+      return (  
         <View style={styles.container}>
-            <Button title='Local' className="float-sm-right" onPress={() => this.props.navigation.navigate('Local')}/>
-            <Image style={styles.logo} source={require('../../assets/images/logo.png')}/>
-            <View style={styles.spacer}/>
-            <View>
-                <Text style={styles.text}>{this.state.thumbnails.length} BOUCLES EN ALARMES ET/OU A ACQUITTER</Text>
-            </View>
-            <View style={styles.spacer}/>
-            <View style={styles.thumbnails_list}>
-              <ThumbnailsList
-                  thumbnails={this.state.thumbnails}
-                  recoverThumbnails={this._recoverThumbnails}
-                />
+            <TouchableHighlight style={styles.round} onPress={() => this.props.navigation.navigate('Local')}><View/></TouchableHighlight>
+            <View style={{alignItems:'center'}}>
+              <Image style={styles.logo} source={require('../../assets/images/logo.png')}/>
+              <View style={styles.spacer}/>
+              <View>
+                  <Text style={styles.text}>{this.state.thumbnails.length} BOUCLES EN ALARMES ET/OU A ACQUITTER</Text>
+              </View>
+              <View style={styles.spacer}/>
+              <View style={styles.thumbnails_list}>
+                <ThumbnailsList
+                    thumbnails={this.state.thumbnails}
+                    recoverThumbnails={this._recoverThumbnails}
+                  />
+              </View>
             </View>
         </View>
       )
@@ -62,8 +63,16 @@ class Thumbnails extends React.Component {
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      alignItems: 'center',
       backgroundColor: '#4C626F',
+    },
+    round: {
+      width:20,
+      height:20,
+      borderRadius:50,
+      backgroundColor:'#8ee06d',
+      position:'absolute',
+      right:5,
+      top:5
     },
     loading_container: {
       position: 'absolute',
@@ -88,7 +97,7 @@ const styles = StyleSheet.create({
       textAlign: 'center'
     },
     thumbnails_list : {
-      height: '65%'
+      height: '70%'
     },
     local: {
       textAlign: 'right'
