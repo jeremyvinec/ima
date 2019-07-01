@@ -17,8 +17,8 @@ export function getThumbnails(data) {
 
 //http://172.20.4.42:8081/cockpit/api/thumbnails
 
-export function getUser(serveur, user) {
-  return fetch('http://' + serveur + '/cockpit/api/thumbnails', {
+export function getUser(serveur, port, user) {
+  return fetch('http://' + serveur + ':' + port + '/cockpit/api/thumbnails', {
     method: 'GET',
     headers: {
       'Accept': 'application/json',

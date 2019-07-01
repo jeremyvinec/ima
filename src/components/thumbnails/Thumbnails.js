@@ -1,9 +1,11 @@
 import React from 'react'
-import { StyleSheet, View, Text, Image, Button, TouchableHighlight } from 'react-native'
+import { StyleSheet, View, Text, Image, TouchableHighlight, ActivityIndicator } from 'react-native'
 import ThumbnailsList from './ThumbnailsList'
+import Local from '../Local'
 
 // API
 import { getThumbnails } from '../../utils/api/Api'
+import { getUser } from '../../utils/api/Api'
 
 class Thumbnails extends React.Component {
 
@@ -13,11 +15,17 @@ class Thumbnails extends React.Component {
         thumbnails: [],
       };
       this._recoverThumbnails = this._recoverThumbnails.bind(this);
+      this.changeLocalSettings = new Local()
     }
 
     componentDidMount(){
       // Dans la plupart des cas, il est préférable d'attendre après le montage pour charger les données. 
       this.interval = setInterval(this._recoverThumbnails, 1000)
+      /*console.log(this.changeLocalSettings.state)
+      if(this.changeLocalSettings.state.isLoading){
+        console.log('true')
+        this._recoverThumbnails()
+      }*/
     }
 
     componentWillUnmount(){
@@ -26,14 +34,12 @@ class Thumbnails extends React.Component {
 
     _recoverThumbnails() {
       console.log('update')
-      getThumbnails().then(data => {
-          //console.log(data.thumbnails)
-  
-          // infos des vignettes
-          this.setState({
-              thumbnails: data.thumbnails
-            })
-  
+      getUser(this.changeLocalSettings.searchedServeur, this.changeLocalSettings.searchedPort, this.changeLocalSettings.searchedUser).then( data => {
+        // console.log(data.thumbnails)
+        // infos des vignettes
+        this.setState({
+          thumbnails:data.thumbnails,
+        })
       })
     }
 

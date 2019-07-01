@@ -8,8 +8,9 @@ class Local extends React.Component {
 
     constructor(props){
         super(props)
-        this.searchedServeur = "",
-        this.searchedUser = "",
+        this.searchedServeur = '172.20.4.42',
+        this.searchedPort = '8081',
+        this.searchedUser = 'a',
         this.state = {
             thumbnails: [],
             isLoading: false
@@ -19,8 +20,7 @@ class Local extends React.Component {
 
     _LoadThumbnails(){
         this.setState({ isLoading: true})
-            getUser(this.searchedServeur, this.searchedUser).then(data => {
-                console.log(this.searchedServeur)
+            getUser(this.searchedServeur, this.searchedPort, this.searchedUser).then(data => {
                 this.setState({
                     thumbnails: data.thumbnails,
                     isLoading: false
@@ -42,6 +42,10 @@ class Local extends React.Component {
 
     _searchUser(user){
         this.searchedUser = user
+    }
+
+    _searchPort(port){
+        this.searchedPort = port
     }
 
     _displayLoading(){
@@ -71,6 +75,17 @@ class Local extends React.Component {
                         />
                     </View>
                     <View style={styles.main_container}>
+                        <Text style={styles.text}>Port</Text>
+                        <TextInput
+                            style={styles.textInput}
+                            onChangeText= {(text) => this.setState({ text })}
+                            editable={true}
+                            maxLength={40}
+                            onChangeText={(port) => this._searchPort(port)}
+                            onSubmitEditing={() => this._searchThumbnails()}
+                        />
+                    </View>
+                    <View style={styles.main_container}>
                         <Text style={styles.text}>Login</Text>
                         <TextInput
                             style={styles.textInput}
@@ -82,7 +97,7 @@ class Local extends React.Component {
                         />
                     </View>
                     <View style={styles.spacer}/>
-                    <Button title='valider'  color="#C4C4C4" onPress={() => this._searchThumbnails()}></Button>
+                    <Button title='valider'  color="#C4C4C4" onPress={() => this._searchThumbnails() /*+ this.props.navigation.navigate('Thumbnails')*/}></Button>
                 </View>
                 <View style={styles.spacer}/>
                 <View style={styles.thumbnails_list}>
