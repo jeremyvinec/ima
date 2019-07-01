@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View, Text, Image, TouchableHighlight, ActivityIndicator } from 'react-native'
+import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native'
 import ThumbnailsList from './ThumbnailsList'
 import Local from '../Local'
 
@@ -21,11 +21,6 @@ class Thumbnails extends React.Component {
     componentDidMount(){
       // Dans la plupart des cas, il est préférable d'attendre après le montage pour charger les données. 
       this.interval = setInterval(this._recoverThumbnails, 1000)
-      /*console.log(this.changeLocalSettings.state)
-      if(this.changeLocalSettings.state.isLoading){
-        console.log('true')
-        this._recoverThumbnails()
-      }*/
     }
 
     componentWillUnmount(){
@@ -46,8 +41,10 @@ class Thumbnails extends React.Component {
     render(){
       return (  
         <View style={styles.container}>
-            <TouchableHighlight style={styles.round} onPress={() => this.props.navigation.navigate('Local')}><View/></TouchableHighlight>
-            <View style={{alignItems:'center'}}>
+            <TouchableOpacity style={styles.header}  onPress={() => this.props.navigation.navigate('Local')}>
+              <Image style={styles.settings} source={require('../../assets/images/settings.png')}/>
+            </TouchableOpacity>
+            <View style={styles.main}>
               <Image style={styles.logo} source={require('../../assets/images/logo.png')}/>
               <View style={styles.spacer}/>
               <View>
@@ -71,23 +68,17 @@ const styles = StyleSheet.create({
       flex: 1,
       backgroundColor: '#4C626F',
     },
-    round: {
-      width:20,
-      height:20,
-      borderRadius:50,
-      backgroundColor:'#8ee06d',
+    header: {
       position:'absolute',
       right:5,
       top:5
     },
-    loading_container: {
-      position: 'absolute',
-      left: 0,
-      right: 0,
-      top: 0,
-      bottom: 0,
-      alignItems: 'center',
-      justifyContent: 'center'
+    main: {
+      alignItems:'center'
+    },
+    settings: {
+      width:20,
+      height:20,
     },
     spacer: {
       height: 10,

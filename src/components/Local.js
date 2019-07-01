@@ -61,45 +61,45 @@ class Local extends React.Component {
     render(){
         return(
             <View style={styles.container}>
-                <View style={styles.content_container}>
                 <Text style={styles.title}> PARAMÉTRAGE DU LOCAL </Text>
+                <View style={styles.content_container}>
                     <View style={styles.main_container}>
-                        <Text style={styles.text}>Serveur</Text>
-                        <TextInput
-                            style={styles.textInput}
-                            onChangeText= {(text) => this.setState({ text })}
-                            editable={true}
-                            maxLength={40}
-                            onChangeText={(serveur) => this._searchServeur(serveur)}
-                            onSubmitEditing={() => this._searchThumbnails()}
-                        />
+                        <View>
+                            <TextInput
+                                style={styles.serveur}
+                                onChangeText= {(text) => this.setState({ text })}
+                                editable={true}
+                                maxLength={40}
+                                placeholder='Nom du serveur'
+                                onChangeText={(serveur) => this._searchServeur(serveur)}
+                                onSubmitEditing={() => this._searchThumbnails()}
+                            />
+                        </View>
+                        <View style={styles.portLogin}>
+                            <TextInput
+                                style={styles.textInput}
+                                onChangeText= {(text) => this.setState({ text })}
+                                editable={true}
+                                maxLength={40}
+                                placeholder='port'
+                                onChangeText={(port) => this._searchPort(port)}
+                                onSubmitEditing={() => this._searchThumbnails()}
+                            />
+                            <TextInput
+                                style={styles.textInput}
+                                onChangeText= {(text) => this.setState({ text })}
+                                editable={true}
+                                maxLength={40}
+                                placeholder='login'
+                                onChangeText={(user) => this._searchUser(user)}
+                                onSubmitEditing={() => this._searchThumbnails()}
+                            />
+                        </View>
+                        <View>
+                            <Button style={styles.button} title='valider'  color="#C4C4C4" onPress={() => this._searchThumbnails() /*+ this.props.navigation.navigate('Thumbnails')*/}></Button>
+                        </View>
                     </View>
-                    <View style={styles.main_container}>
-                        <Text style={styles.text}>Port</Text>
-                        <TextInput
-                            style={styles.textInput}
-                            onChangeText= {(text) => this.setState({ text })}
-                            editable={true}
-                            maxLength={40}
-                            onChangeText={(port) => this._searchPort(port)}
-                            onSubmitEditing={() => this._searchThumbnails()}
-                        />
-                    </View>
-                    <View style={styles.main_container}>
-                        <Text style={styles.text}>Login</Text>
-                        <TextInput
-                            style={styles.textInput}
-                            onChangeText= {(text) => this.setState({ text })}
-                            editable={true}
-                            maxLength={40}
-                            onChangeText={(user) => this._searchUser(user)}
-                            onSubmitEditing={() => this._searchThumbnails()}
-                        />
-                    </View>
-                    <View style={styles.spacer}/>
-                    <Button title='valider'  color="#C4C4C4" onPress={() => this._searchThumbnails() /*+ this.props.navigation.navigate('Thumbnails')*/}></Button>
                 </View>
-                <View style={styles.spacer}/>
                 <View style={styles.thumbnails_list}>
                     <ThumbnailsList
                         thumbnails={this.state.thumbnails}
@@ -120,17 +120,17 @@ const styles = StyleSheet.create({
     },
     content_container: {
         flex: 1,
-        marginTop: 50
+        marginTop: 10,
+        flexDirection:'row'
     },
     main_container: {
-        height: 90,
-        marginTop: 10,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        height: 40,
-        alignItems:'center'
+        //height: 40,
+        //marginTop: 10,
+        //flexDirection: 'row',
+        //justifyContent: 'space-between',
     },
     title: {
+        marginTop:50,
         fontWeight: "bold",
         color: "#fff",
         textAlign: 'center'
@@ -139,10 +139,22 @@ const styles = StyleSheet.create({
         color: "#fff",
         textAlign: 'center'
     },
+    portLogin: {
+        flexDirection:'row',
+        justifyContent: 'space-between'
+    },
     textInput : {
         height: 40,
         width: 100,
-        marginLeft: 30,
+        marginTop:10,
+        color: 'white',
+        textAlign: 'center',
+        borderColor: 'white',
+        borderWidth: 1
+    },
+    serveur : {
+        height: 40,
+        width: 210,
         color: 'white',
         textAlign: 'center',
         borderColor: 'white',
@@ -151,7 +163,6 @@ const styles = StyleSheet.create({
     button:{
         width: 94,
         height: 32,
-        marginTop: 10,
     },
     thumbnails_list : {
         height: '65%'
@@ -164,9 +175,6 @@ const styles = StyleSheet.create({
         bottom: 0,
         alignItems: 'center',
         justifyContent: 'center'
-    },
-    spacer: {
-        height: 10,
     }
 })
 
