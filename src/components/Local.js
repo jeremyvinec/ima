@@ -63,7 +63,7 @@ class Local extends React.Component {
             <View style={styles.container}>
                 <Text style={styles.title}> PARAMÉTRAGE DU LOCAL </Text>
                 <View style={styles.content_container}>
-                    <View style={styles.main_container}>
+                    <View>
                         <View>
                             <TextInput
                                 style={styles.serveur}
@@ -95,11 +95,13 @@ class Local extends React.Component {
                                 onSubmitEditing={() => this._searchThumbnails()}
                             />
                         </View>
-                        <View>
-                            <Button style={styles.button} title='valider'  color="#C4C4C4" onPress={() => this._searchThumbnails() /*+ this.props.navigation.navigate('Thumbnails')*/}></Button>
-                        </View>
                     </View>
                 </View>
+                <Button 
+                    title='valider'  
+                    color="#C4C4C4" 
+                    onPress={() => this._searchThumbnails() /*+ this.props.navigation.navigate('Thumbnails')*/}
+                />
                 <View style={styles.thumbnails_list}>
                     <ThumbnailsList
                         thumbnails={this.state.thumbnails}
@@ -122,12 +124,6 @@ const styles = StyleSheet.create({
         flex: 1,
         marginTop: 10,
         flexDirection:'row'
-    },
-    main_container: {
-        //height: 40,
-        //marginTop: 10,
-        //flexDirection: 'row',
-        //justifyContent: 'space-between',
     },
     title: {
         marginTop:50,
@@ -160,12 +156,8 @@ const styles = StyleSheet.create({
         borderColor: 'white',
         borderWidth: 1
     },
-    button:{
-        width: 94,
-        height: 32,
-    },
     thumbnails_list : {
-        height: '65%'
+        height: '70%'
     },
     loading_container: {
         position: 'absolute',
