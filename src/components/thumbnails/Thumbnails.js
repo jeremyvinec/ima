@@ -13,6 +13,7 @@ class Thumbnails extends React.Component {
       super(props)
       this.state = {
         thumbnails: [],
+        isLoading: false
       };
       this._recoverThumbnails = this._recoverThumbnails.bind(this);
       this.changeLocalSettings = new Local()
@@ -29,8 +30,10 @@ class Thumbnails extends React.Component {
 
     _recoverThumbnails() {
       console.log('update')
+      console.log(this.changeLocalSettings.Loading)
+
       getUser(this.changeLocalSettings.searchedServeur, this.changeLocalSettings.searchedPort, this.changeLocalSettings.searchedUser).then( data => {
-        // console.log(data.thumbnails)
+        //console.log(data.thumbnails)
         // infos des vignettes
         this.setState({
           thumbnails:data.thumbnails,

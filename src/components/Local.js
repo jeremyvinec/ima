@@ -11,6 +11,7 @@ class Local extends React.Component {
         this.searchedServeur = '172.20.4.42',
         this.searchedPort = '8081',
         this.searchedUser = 'a',
+        this.Loading = false,
         this.state = {
             thumbnails: [],
             isLoading: false
@@ -29,6 +30,7 @@ class Local extends React.Component {
     }
 
     _searchThumbnails() {
+        this.Loading = true
         this.setState({
             thumbnails: []
         }, () => {
@@ -71,6 +73,7 @@ class Local extends React.Component {
                                 editable={true}
                                 maxLength={40}
                                 placeholder='Nom du serveur'
+                                placeholderTextColor= '#C4C4C4'
                                 onChangeText={(serveur) => this._searchServeur(serveur)}
                                 onSubmitEditing={() => this._searchThumbnails()}
                             />
@@ -82,6 +85,7 @@ class Local extends React.Component {
                                 editable={true}
                                 maxLength={40}
                                 placeholder='port'
+                                placeholderTextColor= '#C4C4C4'
                                 onChangeText={(port) => this._searchPort(port)}
                                 onSubmitEditing={() => this._searchThumbnails()}
                             />
@@ -91,6 +95,7 @@ class Local extends React.Component {
                                 editable={true}
                                 maxLength={40}
                                 placeholder='login'
+                                placeholderTextColor='#C4C4C4'
                                 onChangeText={(user) => this._searchUser(user)}
                                 onSubmitEditing={() => this._searchThumbnails()}
                             />
@@ -143,7 +148,6 @@ const styles = StyleSheet.create({
         height: 40,
         width: 100,
         marginTop:10,
-        color: 'white',
         textAlign: 'center',
         borderColor: 'white',
         borderWidth: 1
@@ -151,7 +155,6 @@ const styles = StyleSheet.create({
     serveur : {
         height: 40,
         width: 210,
-        color: 'white',
         textAlign: 'center',
         borderColor: 'white',
         borderWidth: 1
