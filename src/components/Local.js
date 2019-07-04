@@ -2,7 +2,7 @@ import React from 'react'
 import { View, Text, TextInput, StyleSheet, Button, ActivityIndicator } from 'react-native'
 import ThumbnailsList from './thumbnails/ThumbnailsList'
 // Api
-import { getUser } from '../utils/api/Api';
+//import { getUser } from '../utils/api/Api';
 
 class Local extends React.Component {
 

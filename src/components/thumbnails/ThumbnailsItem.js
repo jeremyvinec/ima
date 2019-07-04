@@ -28,8 +28,9 @@ class ThumbnailsItem extends React.Component {
       this.alarmeType = ''
       this.state = {
         opacity: new Animated.Value(1),
+        thumbnails: this.props.thumbnails
       }
-      const states = this.props.thumbnails.states
+      const states = this.state.thumbnails.states
       this.value = states.split(' ')
     }
 
@@ -53,7 +54,7 @@ class ThumbnailsItem extends React.Component {
     }
 
     _getImageFromType(){
-      const type = this.props.thumbnails.type
+      const type = this.state.thumbnails.type
       //console.log(type)
       if(type === 'temperature'){
         this.iconThumbnails = temperature
@@ -141,7 +142,7 @@ class ThumbnailsItem extends React.Component {
     }
 
     _critical(){
-      const critical = this.props.thumbnails.critical
+      const critical = this.state.thumbnails.critical
       if(critical === true){
         return(
           <Image className="float-sm-right" style={styles.critical} source={require('../../assets/images/critical-black.png')}/>
@@ -211,7 +212,7 @@ class ThumbnailsItem extends React.Component {
     }    
 
     render() {
-        const { thumbnails } = this.props;
+      const { thumbnails } = this.props
       return (
         <TouchableOpacity>
           <Animated.View style={[{backgroundColor: this.backgroundColor, opacity: this.state.opacity},styles.button, styles.main_container]}>

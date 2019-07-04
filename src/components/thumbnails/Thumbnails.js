@@ -3,25 +3,29 @@ import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native'
 import ThumbnailsList from './ThumbnailsList'
 import Local from '../Local'
 
-// API
-import { getThumbnails } from '../../utils/api/Api'
-import { getUser } from '../../utils/api/Api'
+import { connect} from 'react-redux'
 
 class Thumbnails extends React.Component {
 
     constructor(props){
       super(props)
       this.state = {
-        thumbnails: [],
-        isLoading: false
-      };
-      this._recoverThumbnails = this._recoverThumbnails.bind(this);
+        thumbnails: this.props.thumbnails,
+      }
+      //this._recoverThumbnails = this._recoverThumbnails.bind(this);
       this.changeLocalSettings = new Local()
+    }
+
+    componentWillReceiveProps(nextProps) {
+      if(this.props.thumbnails.id != nextProps.thumbnails.id) {
+        this.setState({ thumbnails: nextProps.thumbnails })
+      }
     }
 
     componentDidMount(){
       // Dans la plupart des cas, il est préférable d'attendre après le montage pour charger les données. 
-      this.interval = setInterval(this._recoverThumbnails, 1000)
+      //this.interval = setInterval(this._recoverThumbnails, 1000)
+      
     }
 
     componentWillUnmount(){
@@ -30,7 +34,6 @@ class Thumbnails extends React.Component {
 
     _recoverThumbnails() {
       console.log('update')
-      console.log(this.changeLocalSettings.Loading)
 
       getUser(this.changeLocalSettings.searchedServeur, this.changeLocalSettings.searchedPort, this.changeLocalSettings.searchedUser).then( data => {
         //console.log(data.thumbnails)
@@ -56,8 +59,7 @@ class Thumbnails extends React.Component {
               <View style={styles.spacer}/>
               <View style={styles.thumbnails_list}>
                 <ThumbnailsList
-                    thumbnails={this.state.thumbnails}
-                    recoverThumbnails={this._recoverThumbnails}
+                    thumbnails={this.props.thumbnails}
                   />
               </View>
             </View>
@@ -104,4 +106,10 @@ const styles = StyleSheet.create({
     }
 })
 
-export default Thumbnails
+const mapStateToProps = (state) => {
+  return {
+    thumbnails: state.thumbnails
+  }
+}
+
+export default connect(mapStateToProps)(Thumbnails)
