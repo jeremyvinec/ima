@@ -1,7 +1,13 @@
-import { combineReducers } from 'redux'
 import thumbnails from './thumbnailsReducer'
+import { persistCombineReducers } from 'redux-persist'
+import storage from 'redux-persist/lib/storage'
 
-const rootReducer = combineReducers({
+const rootPersistConfig = {
+    key: 'root',
+    storage: storage
+  }
+
+const rootReducer = persistCombineReducers(rootPersistConfig, {
     thumbnails
 })
 
