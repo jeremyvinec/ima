@@ -1,31 +1,20 @@
 import React from 'react'
 import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native'
 import ThumbnailsList from './ThumbnailsList'
-import Local from '../Local'
 
-import { connect} from 'react-redux'
+import { connect } from 'react-redux'
 
 class Thumbnails extends React.Component {
 
     constructor(props){
       super(props)
-      this.state = {
-        thumbnails: this.props.thumbnails,
-      }
       //this._recoverThumbnails = this._recoverThumbnails.bind(this);
-      this.changeLocalSettings = new Local()
-    }
-
-    componentWillReceiveProps(nextProps) {
-      if(this.props.thumbnails.id != nextProps.thumbnails.id) {
-        this.setState({ thumbnails: nextProps.thumbnails })
-      }
     }
 
     componentDidMount(){
       // Dans la plupart des cas, il est préférable d'attendre après le montage pour charger les données. 
       //this.interval = setInterval(this._recoverThumbnails, 1000)
-      
+      this._recoverThumbnails()
     }
 
     componentWillUnmount(){
@@ -33,15 +22,8 @@ class Thumbnails extends React.Component {
     }
 
     _recoverThumbnails() {
-      console.log('update')
-
-      getUser(this.changeLocalSettings.searchedServeur, this.changeLocalSettings.searchedPort, this.changeLocalSettings.searchedUser).then( data => {
-        //console.log(data.thumbnails)
-        // infos des vignettes
-        this.setState({
-          thumbnails:data.thumbnails,
-        })
-      })
+      const action = { type: 'LOAD_THUMBNAILS', value: this.props.thumbnails}
+      console.log(this.props.dispatch(action))
     }
 
     render(){
@@ -54,7 +36,7 @@ class Thumbnails extends React.Component {
               <Image style={styles.logo} source={require('../../assets/images/logo.png')}/>
               <View style={styles.spacer}/>
               <View>
-                  <Text style={styles.text}>{this.state.thumbnails.length} BOUCLES EN ALARMES ET/OU A ACQUITTER</Text>
+                  <Text style={styles.text}>{this.props.thumbnails.length} BOUCLES EN ALARMES ET/OU A ACQUITTER</Text>
               </View>
               <View style={styles.spacer}/>
               <View style={styles.thumbnails_list}>

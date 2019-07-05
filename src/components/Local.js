@@ -1,8 +1,7 @@
 import React from 'react'
 import { View, Text, TextInput, StyleSheet, Button, ActivityIndicator } from 'react-native'
 import ThumbnailsList from './thumbnails/ThumbnailsList'
-// Api
-//import { getUser } from '../utils/api/Api';
+import { connect } from 'react-redux'
 
 class Local extends React.Component {
 
@@ -11,9 +10,8 @@ class Local extends React.Component {
         this.searchedServeur = '172.20.4.42',
         this.searchedPort = '8081',
         this.searchedUser = 'a',
-        this.Loading = false,
         this.state = {
-            thumbnails: [],
+            thumbnails: props.thumbnails,
             isLoading: false
         }
         this._LoadThumbnails = this._LoadThumbnails.bind(this)
@@ -61,6 +59,7 @@ class Local extends React.Component {
     }
 
     render(){
+        console.log(this.state.thumbnails)
         return(
             <View style={styles.container}>
                 <Text style={styles.title}> PARAMÉTRAGE DU LOCAL </Text>
@@ -173,4 +172,10 @@ const styles = StyleSheet.create({
     }
 })
 
-export default Local
+const mapStateToProps = (state) => {
+    return {
+      thumbnails: state.thumbnails
+    }
+  }
+
+export default connect(mapStateToProps)(Local)
