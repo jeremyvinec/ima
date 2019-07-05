@@ -8,13 +8,13 @@ class Thumbnails extends React.Component {
 
     constructor(props){
       super(props)
-      //this._recoverThumbnails = this._recoverThumbnails.bind(this);
+      this._recoverThumbnails = this._recoverThumbnails.bind(this);
     }
 
     componentDidMount(){
       // Dans la plupart des cas, il est préférable d'attendre après le montage pour charger les données. 
-      //this.interval = setInterval(this._recoverThumbnails, 1000)
-      this._recoverThumbnails()
+      this.interval = setInterval(this._recoverThumbnails, 1000)
+      //this._recoverThumbnails()
     }
 
     componentWillUnmount(){
@@ -22,8 +22,9 @@ class Thumbnails extends React.Component {
     }
 
     _recoverThumbnails() {
+      console.log('update')
       const action = { type: 'LOAD_THUMBNAILS', value: this.props.thumbnails}
-      console.log(this.props.dispatch(action))
+      this.props.dispatch(action)
     }
 
     render(){
