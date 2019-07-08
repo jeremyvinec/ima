@@ -28,7 +28,8 @@ class Local extends React.Component {
     }
 
     _searchThumbnails() {
-        this.Loading = true
+        const serveurAction = { type: 'SERVEUR', value: this.searchedServeur}
+        this.props.dispatch(serveurAction)
         this.setState({
             thumbnails: []
         }, () => {
@@ -74,7 +75,6 @@ class Local extends React.Component {
                                 placeholder='Nom du serveur'
                                 placeholderTextColor= '#C4C4C4'
                                 onChangeText={(serveur) => this._searchServeur(serveur)}
-                                onSubmitEditing={() => this._searchThumbnails()}
                             />
                         </View>
                         <View style={styles.portLogin}>
@@ -86,7 +86,6 @@ class Local extends React.Component {
                                 placeholder='port'
                                 placeholderTextColor= '#C4C4C4'
                                 onChangeText={(port) => this._searchPort(port)}
-                                onSubmitEditing={() => this._searchThumbnails()}
                             />
                             <TextInput
                                 style={styles.textInput}
@@ -96,7 +95,6 @@ class Local extends React.Component {
                                 placeholder='login'
                                 placeholderTextColor='#C4C4C4'
                                 onChangeText={(user) => this._searchUser(user)}
-                                onSubmitEditing={() => this._searchThumbnails()}
                             />
                         </View>
                     </View>
@@ -174,7 +172,10 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
     return {
-      thumbnails: state.thumbnails
+      thumbnails: state.thumbnails,
+      searchedServeur: state.searchedServeur,
+      searchedPort: state.searchedPort,
+      searchedUser:state.searchedUser
     }
   }
 

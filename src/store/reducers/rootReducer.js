@@ -1,4 +1,5 @@
 import thumbnails from './thumbnailsReducer'
+import settings from './settingsReducer'
 import { persistCombineReducers } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 
@@ -9,7 +10,7 @@ const rootPersistConfig = {
   }
 
 const rootReducer = persistCombineReducers(rootPersistConfig, {
-    thumbnails
+    thumbnails, settings
 })
 
 export default rootReducer

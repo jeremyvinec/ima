@@ -3,17 +3,21 @@ import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native'
 import ThumbnailsList from './ThumbnailsList'
 
 import { connect } from 'react-redux'
+import thumbnailsApi from '../../api/thumbnailsApi'
 
 class Thumbnails extends React.Component {
 
     constructor(props){
       super(props)
+      this.state = {
+        thumbnails: []
+      }
       this._recoverThumbnails = this._recoverThumbnails.bind(this);
     }
 
     componentDidMount(){
       // Dans la plupart des cas, il est préférable d'attendre après le montage pour charger les données. 
-      this.interval = setInterval(this._recoverThumbnails, 1000)
+      //this.interval = setInterval(this._recoverThumbnails, 1000)
       //this._recoverThumbnails()
     }
 
@@ -23,8 +27,12 @@ class Thumbnails extends React.Component {
 
     _recoverThumbnails() {
       console.log('update')
-      const action = { type: 'LOAD_THUMBNAILS', value: this.props.thumbnails}
-      this.props.dispatch(action)
+
+      thumbnailsApi.getAllThumbnails().then(data => {
+        this.setState({
+          thumbnails: data.thumbnails
+        })
+      })
     }
 
     render(){
@@ -91,7 +99,10 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
-    thumbnails: state.thumbnails
+    thumbnails: state.thumbnails,
+    searchedServeur: state.searchedServeur,
+    searchedPort: state.searchedPort,
+    searchedUser:state.searchedUser
   }
 }
 

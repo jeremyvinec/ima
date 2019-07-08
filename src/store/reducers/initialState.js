@@ -1,3 +1,8 @@
 export default {
-    thumbnails: []
+    thumbnails: [],
+    settings: {
+        searchedServeur: '',
+        searchedPort: '',
+        searchedUser: ''
+    }
 }
