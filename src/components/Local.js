@@ -7,9 +7,6 @@ class Local extends React.Component {
 
     constructor(props){
         super(props)
-        this.searchedServeur = '172.20.4.42',
-        this.searchedPort = '8081',
-        this.searchedUser = 'a',
         this.state = {
             thumbnails: props.thumbnails,
             isLoading: false
@@ -28,8 +25,6 @@ class Local extends React.Component {
     }
 
     _searchThumbnails() {
-        const serveurAction = { type: 'SERVEUR', value: this.searchedServeur}
-        this.props.dispatch(serveurAction)
         this.setState({
             thumbnails: []
         }, () => {
@@ -38,15 +33,21 @@ class Local extends React.Component {
     }
 
     _searchServeur(serveur){
-        this.searchedServeur = serveur
-    }
-
-    _searchUser(user){
-        this.searchedUser = user
+        const serveurAction = { type: 'SERVEUR', serveur}
+        this.props.dispatch(serveurAction)
+        console.log(this.props)
     }
 
     _searchPort(port){
-        this.searchedPort = port
+        const portAction = { type: 'PORT', value: port}
+        this.props.dispatch(portAction)
+        console.log(this.props)        
+    }
+
+    _searchUser(user){
+        const userAction = { type: 'USER', value: user}
+        this.props.dispatch(userAction)
+        console.log(this.props)
     }
 
     _displayLoading(){
@@ -60,7 +61,6 @@ class Local extends React.Component {
     }
 
     render(){
-        console.log(this.state.thumbnails)
         return(
             <View style={styles.container}>
                 <Text style={styles.title}> PARAMÉTRAGE DU LOCAL </Text>
@@ -69,7 +69,7 @@ class Local extends React.Component {
                         <View>
                             <TextInput
                                 style={styles.serveur}
-                                onChangeText= {(text) => this.setState({ text })}
+                                //onChangeText= {(text) => this.setState({ text })}
                                 editable={true}
                                 maxLength={40}
                                 placeholder='Nom du serveur'
@@ -80,7 +80,7 @@ class Local extends React.Component {
                         <View style={styles.portLogin}>
                             <TextInput
                                 style={styles.textInput}
-                                onChangeText= {(text) => this.setState({ text })}
+                                //onChangeText= {(text) => this.setState({ text })}
                                 editable={true}
                                 maxLength={40}
                                 placeholder='port'
@@ -89,7 +89,7 @@ class Local extends React.Component {
                             />
                             <TextInput
                                 style={styles.textInput}
-                                onChangeText= {(text) => this.setState({ text })}
+                                //onChangeText= {(text) => this.setState({ text })}
                                 editable={true}
                                 maxLength={40}
                                 placeholder='login'
@@ -173,9 +173,9 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => {
     return {
       thumbnails: state.thumbnails,
-      searchedServeur: state.searchedServeur,
+      searchedServeur: state.searchedServeur, 
       searchedPort: state.searchedPort,
-      searchedUser:state.searchedUser
+      searchedUser: state.searchedUser
     }
   }
 

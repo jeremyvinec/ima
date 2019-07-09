@@ -1,5 +1,7 @@
 import thumbnails from './thumbnailsReducer'
-import settings from './settingsReducer'
+import searchedServeur from './serveurReducer'
+import searchedPort from './portReducer'
+import searchedUser from './userRecucer'
 import { persistCombineReducers } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 
@@ -10,7 +12,7 @@ const rootPersistConfig = {
   }
 
 const rootReducer = persistCombineReducers(rootPersistConfig, {
-    thumbnails, settings
+    thumbnails, searchedServeur, searchedPort, searchedUser
 })
 
 export default rootReducer

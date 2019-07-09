@@ -14,13 +14,3 @@ export function loadThumbnails() {
         })
     }
 }
-
-export function updateThumbnails(){
-    return dispatch => {
-        return thumbnailsApi.updateThumbnails().then(thumbnails => {
-            dispatch(updateThumbnailsSuccess(thumbnails.thumbnails))
-        }).catch(error => {
-            throw(error)
-        })
-    }
-}

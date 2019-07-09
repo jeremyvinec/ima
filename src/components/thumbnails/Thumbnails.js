@@ -12,7 +12,7 @@ class Thumbnails extends React.Component {
       this.state = {
         thumbnails: []
       }
-      this._recoverThumbnails = this._recoverThumbnails.bind(this);
+      //this._recoverThumbnails = this._recoverThumbnails.bind(this);
     }
 
     componentDidMount(){
