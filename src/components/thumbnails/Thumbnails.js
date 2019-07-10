@@ -18,7 +18,7 @@ class Thumbnails extends React.Component {
     componentDidMount(){
       // Dans la plupart des cas, il est préférable d'attendre après le montage pour charger les données. 
       //this.interval = setInterval(this._recoverThumbnails, 1000)
-      //this._recoverThumbnails()
+      this._recoverThumbnails()
     }
 
     componentWillUnmount(){
@@ -27,8 +27,8 @@ class Thumbnails extends React.Component {
 
     _recoverThumbnails() {
       console.log('update')
-
-      thumbnailsApi.getAllThumbnails().then(data => {
+      const { searchedServeur, searchedPort, searchedUser } = this.props
+      thumbnailsApi.getAllThumbnails(searchedServeur, searchedPort, searchedUser).then(data => {
         this.setState({
           thumbnails: data.thumbnails
         })
@@ -36,6 +36,7 @@ class Thumbnails extends React.Component {
     }
 
     render(){
+      console.log(this.props)
       return (  
         <View style={styles.container}>
             <TouchableOpacity style={styles.header}  onPress={() => this.props.navigation.navigate('Local')}>
@@ -45,12 +46,12 @@ class Thumbnails extends React.Component {
               <Image style={styles.logo} source={require('../../assets/images/logo.png')}/>
               <View style={styles.spacer}/>
               <View>
-                  <Text style={styles.text}>{this.props.thumbnails.length} BOUCLES EN ALARMES ET/OU A ACQUITTER</Text>
+                  <Text style={styles.text}>{this.state.thumbnails.length} BOUCLES EN ALARMES ET/OU A ACQUITTER</Text>
               </View>
               <View style={styles.spacer}/>
               <View style={styles.thumbnails_list}>
                 <ThumbnailsList
-                    thumbnails={this.props.thumbnails}
+                    thumbnails={this.state.thumbnails}
                   />
               </View>
             </View>
@@ -99,7 +100,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
-    thumbnails: state.thumbnails,
+    //thumbnails: state.thumbnails,
     searchedServeur: state.searchedServeur,
     searchedPort: state.searchedPort,
     searchedUser:state.searchedUser

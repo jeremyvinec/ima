@@ -15,8 +15,9 @@ class Local extends React.Component {
     }
 
     _LoadThumbnails(){
+        const { searchedServeur, searchedPort, searchedUser} = this.props
         this.setState({ isLoading: true})
-            getUser(this.searchedServeur, this.searchedPort, this.searchedUser).then(data => {
+            getUser(searchedServeur, searchedPort, searchedUser).then(data => {
                 this.setState({
                     thumbnails: data.thumbnails,
                     isLoading: false
@@ -35,19 +36,16 @@ class Local extends React.Component {
     _searchServeur(serveur){
         const serveurAction = { type: 'SERVEUR', value: serveur}
         this.props.dispatch(serveurAction)
-        console.log(this.props)
     }
 
     _searchPort(port){
         const portAction = { type: 'PORT', value: port}
-        this.props.dispatch(portAction)
-        console.log(this.props)        
+        this.props.dispatch(portAction)        
     }
 
     _searchUser(user){
         const userAction = { type: 'USER', value: user}
         this.props.dispatch(userAction)
-        console.log(this.props)
     }
 
     _displayLoading(){
@@ -102,7 +100,7 @@ class Local extends React.Component {
                 <Button 
                     title='valider'  
                     color="#C4C4C4" 
-                    onPress={() => this._searchThumbnails() /*+ this.props.navigation.navigate('Thumbnails')*/}
+                    onPress={() => this.props.navigation.navigate('Thumbnails')}
                 />
                 <View style={styles.thumbnails_list}>
                     <ThumbnailsList
@@ -172,7 +170,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
     return {
-      thumbnails: state.thumbnails,
+      //thumbnails: state.thumbnails,
       searchedServeur: state.searchedServeur, 
       searchedPort: state.searchedPort,
       searchedUser: state.searchedUser
