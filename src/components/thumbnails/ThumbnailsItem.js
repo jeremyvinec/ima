@@ -1,6 +1,8 @@
 import React from 'react'
 import { StyleSheet, View, Text, TouchableOpacity, Image, Animated } from 'react-native'
 import PushNotification from 'react-native-push-notification';
+// Accéder à Navigation Prop
+import { withNavigation } from 'react-navigation'
 
 // ICONS
 import temperature from '../../assets/images/types/temperature.png'
@@ -214,7 +216,7 @@ class ThumbnailsItem extends React.Component {
     render() {
       const { thumbnails } = this.props
       return (
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('Release')}>
           <Animated.View style={[{backgroundColor: this.backgroundColor, opacity: this.state.opacity},styles.button, styles.main_container]}>
           <Image style={styles.imageButton} source={this.iconThumbnails}/>
             <View style={styles.content_container}>
@@ -283,4 +285,4 @@ class ThumbnailsItem extends React.Component {
     }
   });
 
-  export default ThumbnailsItem
+  export default withNavigation(ThumbnailsItem)

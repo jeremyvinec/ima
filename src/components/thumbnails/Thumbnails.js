@@ -12,13 +12,12 @@ class Thumbnails extends React.Component {
       this.state = {
         thumbnails: []
       }
-      //this._recoverThumbnails = this._recoverThumbnails.bind(this);
+      this._recoverThumbnails = this._recoverThumbnails.bind(this);
     }
 
     componentDidMount(){
       // Dans la plupart des cas, il est préférable d'attendre après le montage pour charger les données. 
-      //this.interval = setInterval(this._recoverThumbnails, 1000)
-      this._recoverThumbnails()
+      this.interval = setInterval(this._recoverThumbnails, 5000)
     }
 
     componentWillUnmount(){

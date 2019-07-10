@@ -1,6 +1,5 @@
 import React from 'react'
 import { View, Text, TextInput, StyleSheet, Button, ActivityIndicator } from 'react-native'
-import ThumbnailsList from './thumbnails/ThumbnailsList'
 import { connect } from 'react-redux'
 
 class Local extends React.Component {
@@ -11,26 +10,6 @@ class Local extends React.Component {
             thumbnails: props.thumbnails,
             isLoading: false
         }
-        this._LoadThumbnails = this._LoadThumbnails.bind(this)
-    }
-
-    _LoadThumbnails(){
-        const { searchedServeur, searchedPort, searchedUser} = this.props
-        this.setState({ isLoading: true})
-            getUser(searchedServeur, searchedPort, searchedUser).then(data => {
-                this.setState({
-                    thumbnails: data.thumbnails,
-                    isLoading: false
-            })
-        })
-    }
-
-    _searchThumbnails() {
-        this.setState({
-            thumbnails: []
-        }, () => {
-            this._LoadThumbnails()
-        })
     }
 
     _searchServeur(serveur){
@@ -67,46 +46,39 @@ class Local extends React.Component {
                         <View>
                             <TextInput
                                 style={styles.serveur}
-                                //onChangeText= {(text) => this.setState({ text })}
                                 editable={true}
                                 maxLength={40}
                                 placeholder='Nom du serveur'
                                 placeholderTextColor= '#C4C4C4'
-                                onChangeText={(serveur) => this._searchServeur(serveur)}
+                                //onChangeText={(serveur) => this._searchServeur(serveur)}
                             />
                         </View>
                         <View style={styles.portLogin}>
                             <TextInput
                                 style={styles.textInput}
-                                //onChangeText= {(text) => this.setState({ text })}
                                 editable={true}
                                 maxLength={40}
                                 placeholder='port'
                                 placeholderTextColor= '#C4C4C4'
-                                onChangeText={(port) => this._searchPort(port)}
+                                //onChangeText={(port) => this._searchPort(port)}
                             />
                             <TextInput
                                 style={styles.textInput}
-                                //onChangeText= {(text) => this.setState({ text })}
                                 editable={true}
                                 maxLength={40}
                                 placeholder='login'
                                 placeholderTextColor='#C4C4C4'
-                                onChangeText={(user) => this._searchUser(user)}
+                                //onChangeText={(user) => this._searchUser(user)}
                             />
                         </View>
                     </View>
-                </View>
-                <Button 
-                    title='valider'  
-                    color="#C4C4C4" 
-                    onPress={() => this.props.navigation.navigate('Thumbnails')}
-                />
-                <View style={styles.thumbnails_list}>
-                    <ThumbnailsList
-                        thumbnails={this.state.thumbnails}
-                        changeUser={this._LoadThumbnails}
+                    <View style={styles.button}>
+                    <Button 
+                        title='valider'  
+                        color="#C4C4C4" 
+                        onPress={() => this.props.navigation.navigate('Thumbnails')}
                     />
+                </View>
                 </View>
                 {this._displayLoading()}
             </View>
@@ -123,8 +95,15 @@ const styles = StyleSheet.create({
     content_container: {
         flex: 1,
         marginTop: 10,
-        flexDirection:'row'
     },
+    button: {
+        margin: 5,
+        padding: 5,
+        width: 200,
+        height: 90,
+        borderRadius: 5,
+        alignItems: 'center'
+      },
     title: {
         marginTop:50,
         fontWeight: "bold",
@@ -153,9 +132,6 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         borderColor: 'white',
         borderWidth: 1
-    },
-    thumbnails_list : {
-        height: '70%'
     },
     loading_container: {
         position: 'absolute',
