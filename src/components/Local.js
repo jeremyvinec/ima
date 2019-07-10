@@ -33,7 +33,7 @@ class Local extends React.Component {
     }
 
     _searchServeur(serveur){
-        const serveurAction = { type: 'SERVEUR', serveur}
+        const serveurAction = { type: 'SERVEUR', value: serveur}
         this.props.dispatch(serveurAction)
         console.log(this.props)
     }
