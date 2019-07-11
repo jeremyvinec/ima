@@ -4,6 +4,8 @@ import PushNotification from 'react-native-push-notification';
 // Accéder à Navigation Prop
 import { withNavigation } from 'react-navigation'
 
+import { connect } from 'react-redux'
+
 // ICONS
 import temperature from '../../assets/images/types/temperature.png'
 import hygrometry from '../../assets/images/types/hygrometry.png'
@@ -190,6 +192,7 @@ class ThumbnailsItem extends React.Component {
           actions: '["Annuler", "Acquitter"]',  // (Android only) See the doc for notification actions to know more
           subText: "Local stockage : " + thumbnails.states, // (optional) default: none
           color: "red", // (optional) default: system default
+          group:'alarm',
           //ongoing: true, // (optional) set whether this is an "ongoing" notification
           //importance: 'high', // (optional) set notification importance, default: high
           //priority: 'high',
@@ -205,18 +208,19 @@ class ThumbnailsItem extends React.Component {
           actions: '["Annuler", "Acquitter"]',  // (Android only) See the doc for notification actions to know more
           subText: "Local stockage : " + thumbnails.states, // (optional) default: none
           color: "orange", // (optional) default: system default
+          group:'prealarm',
           //ongoing: true, // (optional) set whether this is an "ongoing" notification
           //importance: 'high', // (optional) set notification importance, default: high
           //priority: 'high',
           //ticker: "My Notification Ticker", // (optional)
         })
       }
-    }    
+    }
 
     render() {
-      const { thumbnails } = this.props
+      const { thumbnails, displayRelease } = this.props
       return (
-        <TouchableOpacity onPress={() => this.props.navigation.navigate('Release')}>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('Release') + displayRelease(thumbnails.id)} >
           <Animated.View style={[{backgroundColor: this.backgroundColor, opacity: this.state.opacity},styles.button, styles.main_container]}>
           <Image style={styles.imageButton} source={this.iconThumbnails}/>
             <View style={styles.content_container}>
@@ -285,4 +289,10 @@ class ThumbnailsItem extends React.Component {
     }
   });
 
-  export default withNavigation(ThumbnailsItem)
+  const mapStateToProps = (state) => {
+    return {
+      thumbnailsItem: state.thumbnailsItem
+    }
+  }
+
+  export default connect(mapStateToProps)(withNavigation(ThumbnailsItem))

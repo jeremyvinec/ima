@@ -13,7 +13,7 @@ import { PersistGate } from 'redux-persist/es/integration/react'
 
 const store = configureStore()
 
-//store.dispatch(loadThumbnails())
+store.dispatch(loadThumbnails())
 
 export default class App extends React.Component {
   render() {

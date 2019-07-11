@@ -4,16 +4,16 @@ import { View, StyleSheet, Text, TextInput, TouchableOpacity } from 'react-nativ
 class Release extends React.Component{
 
     render(){
+        console.log(this.props.navigation.getParam('idThumbnails'))
         return(
             <View style={styles.container}>
                 <Text style={styles.title}>
-                    BOUCLE 11 UU97533-12008 :
-                    ACQUITTER 3 ALARMES
+                    {this.props.navigation.getParam('idThumbnails')}
                 </Text>
                 <View style={styles.content_container}>
-                    <View>
+                    <View style={styles.content_textInput}>
                         <TextInput
-                            style={styles.serveur}
+                            style={styles.textInput}
                             autoFocus={true}
                             editable={true}
                             maxLength={40}
@@ -22,7 +22,7 @@ class Release extends React.Component{
                             onChangeText={(serveur) => this._searchServeur(serveur)}
                         />
                         <TextInput
-                            style={styles.serveur}
+                            style={styles.textInput}
                             editable={true}
                             maxLength={40}
                             placeholder='Mots de passe: '
@@ -30,7 +30,7 @@ class Release extends React.Component{
                             onChangeText={(serveur) => this._searchServeur(serveur)}
                         />
                         <TextInput
-                            style={styles.serveur}
+                            style={styles.textInput}
                             editable={true}
                             multiline={true}
                             placeholder='Commentaire: '
@@ -75,8 +75,7 @@ const styles = StyleSheet.create({
         padding: 5,
         width: 94,
         height: 32,
-        backgroundColor: '#C4C4C4' ,
-        opacity:0.3,
+        backgroundColor: 'rgba(196, 196, 196, 0.3)' ,
         borderRadius: 12,
         alignItems: 'center'
     },
@@ -91,6 +90,12 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontWeight: 'bold'
     },
+    content_textInput: {
+        textAlign: 'left',
+    },
+    textInput: {
+        color: 'white'
+    }
 })
 
 export default Release

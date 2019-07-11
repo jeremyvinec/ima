@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, TextInput, StyleSheet, Button, ActivityIndicator } from 'react-native'
+import { View, Text, TextInput, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 
 class Local extends React.Component {
@@ -50,7 +50,7 @@ class Local extends React.Component {
                                 maxLength={40}
                                 placeholder='Nom du serveur'
                                 placeholderTextColor= '#C4C4C4'
-                                //onChangeText={(serveur) => this._searchServeur(serveur)}
+                                onChangeText={(serveur) => this._searchServeur(serveur)}
                             />
                         </View>
                         <View style={styles.portLogin}>
@@ -60,7 +60,7 @@ class Local extends React.Component {
                                 maxLength={40}
                                 placeholder='port'
                                 placeholderTextColor= '#C4C4C4'
-                                //onChangeText={(port) => this._searchPort(port)}
+                                onChangeText={(port) => this._searchPort(port)}
                             />
                             <TextInput
                                 style={styles.textInput}
@@ -68,17 +68,15 @@ class Local extends React.Component {
                                 maxLength={40}
                                 placeholder='login'
                                 placeholderTextColor='#C4C4C4'
-                                //onChangeText={(user) => this._searchUser(user)}
+                                onChangeText={(user) => this._searchUser(user)}
                             />
                         </View>
                     </View>
-                    <View style={styles.button}>
-                    <Button 
-                        title='valider'  
-                        color="#C4C4C4" 
-                        onPress={() => this.props.navigation.navigate('Thumbnails')}
-                    />
-                </View>
+                    <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
+                        <View style={styles.button}>
+                            <Text style={styles.text}>VALIDER</Text>
+                        </View>
+                    </TouchableOpacity>
                 </View>
                 {this._displayLoading()}
             </View>
@@ -94,15 +92,18 @@ const styles = StyleSheet.create({
     },
     content_container: {
         flex: 1,
-        marginTop: 10,
+        marginTop: 20,
+        alignItems:'center'
     },
     button: {
         margin: 5,
         padding: 5,
-        width: 200,
-        height: 90,
-        borderRadius: 5,
-        alignItems: 'center'
+        width: 94,
+        height: 32,
+        backgroundColor: 'rgba(196, 196, 196, 0.3)' ,
+        borderRadius: 12,
+        alignItems: 'center',
+        marginTop: 20
       },
     title: {
         marginTop:50,
@@ -112,7 +113,8 @@ const styles = StyleSheet.create({
     },
     text: {
         color: "#fff",
-        textAlign: 'center'
+        textAlign: 'center',
+        fontWeight: 'bold'
     },
     portLogin: {
         flexDirection:'row',
@@ -123,6 +125,7 @@ const styles = StyleSheet.create({
         width: 100,
         marginTop:10,
         textAlign: 'center',
+        color: 'white',
         borderColor: 'white',
         borderWidth: 1
     },
@@ -146,7 +149,6 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
     return {
-      //thumbnails: state.thumbnails,
       searchedServeur: state.searchedServeur, 
       searchedPort: state.searchedPort,
       searchedUser: state.searchedUser

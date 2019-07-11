@@ -35,10 +35,9 @@ class Thumbnails extends React.Component {
     }
 
     render(){
-      console.log(this.props)
-      return (  
+      return (
         <View style={styles.container}>
-            <TouchableOpacity style={styles.header}  onPress={() => this.props.navigation.navigate('Local')}>
+            <TouchableOpacity style={styles.header}  onPress={() => clearInterval(this.interval) + this.props.navigation.navigate('Local')}>
               <Image style={styles.settings} source={require('../../assets/images/settings.png')}/>
             </TouchableOpacity>
             <View style={styles.main}>

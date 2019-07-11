@@ -1,6 +1,7 @@
 import React from 'react'
 import { StyleSheet, FlatList } from 'react-native'
 import ThumbnailsItem from './ThumbnailsItem'
+import { withNavigation } from 'react-navigation'
 
 class ThumbnailsList extends React.Component {
 
@@ -9,6 +10,10 @@ class ThumbnailsList extends React.Component {
     this.state = {
       thumbnails: [],
     }
+  }
+
+  _displayRelease = (idThumbnails) => {
+    this.props.navigation.navigate("Release", { idThumbnails: idThumbnails })
   }
 
   render() {
@@ -22,6 +27,7 @@ class ThumbnailsList extends React.Component {
           renderItem={({item}) => ( 
             <ThumbnailsItem 
               thumbnails={item}
+              displayRelease={this._displayRelease}
             />
           )}
         />
@@ -35,4 +41,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default ThumbnailsList
+export default withNavigation(ThumbnailsList)
