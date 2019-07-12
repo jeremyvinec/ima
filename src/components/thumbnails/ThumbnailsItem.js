@@ -220,7 +220,7 @@ class ThumbnailsItem extends React.Component {
     render() {
       const { thumbnails, displayRelease } = this.props
       return (
-        <TouchableOpacity onPress={() => this.props.navigation.navigate('Release') + displayRelease(thumbnails.id)} >
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('Release') + displayRelease(thumbnails.name)} >
           <Animated.View style={[{backgroundColor: this.backgroundColor, opacity: this.state.opacity},styles.button, styles.main_container]}>
           <Image style={styles.imageButton} source={this.iconThumbnails}/>
             <View style={styles.content_container}>

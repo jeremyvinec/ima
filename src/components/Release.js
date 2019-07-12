@@ -1,5 +1,6 @@
 import React from 'react'
 import { View, StyleSheet, Text, TextInput, TouchableOpacity } from 'react-native'
+import AckIcon from '../assets/svg/AckIcon'
 
 class Release extends React.Component{
 
@@ -38,6 +39,7 @@ class Release extends React.Component{
                             onChangeText={(serveur) => this._searchServeur(serveur)}
                         />
                     </View>
+                    
                     <View style={styles.button_container}>
                         <TouchableOpacity onPress={() => this.props.navigation.navigate('Thumbnails')}>
                             <View style={styles.button}>
@@ -45,7 +47,8 @@ class Release extends React.Component{
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => this.props.navigation.navigate('Thumbnails')}>
-                            <View style={styles.button}>
+                            <View style={[styles.button, styles.acquitter]}>
+                                <AckIcon style={styles.ack}/>
                                 <Text style={styles.text}>ACQUITTER</Text>
                             </View>
                         </TouchableOpacity>
@@ -70,14 +73,21 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between'
     },
+    ack: {
+        color: 'white'
+    },
+    acquitter: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+    },
     button: {
         margin: 5,
         padding: 5,
-        width: 94,
+        width: 120,
         height: 32,
         backgroundColor: 'rgba(196, 196, 196, 0.3)' ,
         borderRadius: 12,
-        alignItems: 'center'
+        alignItems: 'center',
     },
     title: {
         marginTop:50,
@@ -88,7 +98,7 @@ const styles = StyleSheet.create({
     text: {
         color: "#fff",
         textAlign: 'center',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
     },
     content_textInput: {
         textAlign: 'left',
