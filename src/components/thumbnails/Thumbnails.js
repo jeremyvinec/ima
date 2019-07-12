@@ -5,6 +5,9 @@ import ThumbnailsList from './ThumbnailsList'
 import { connect } from 'react-redux'
 import thumbnailsApi from '../../api/thumbnailsApi'
 
+// SVG
+import SettingsIcon from '../../assets/svg/SettingsIcon'
+
 class Thumbnails extends React.Component {
 
     constructor(props){
@@ -38,7 +41,7 @@ class Thumbnails extends React.Component {
       return (
         <View style={styles.container}>
             <TouchableOpacity style={styles.header}  onPress={() => clearInterval(this.interval) + this.props.navigation.navigate('Local')}>
-              <Image style={styles.settings} source={require('../../assets/images/settings.png')}/>
+              <SettingsIcon/>
             </TouchableOpacity>
             <View style={styles.main}>
               <Image style={styles.logo} source={require('../../assets/images/logo.png')}/>
@@ -70,10 +73,6 @@ const styles = StyleSheet.create({
     },
     main: {
       alignItems:'center'
-    },
-    settings: {
-      width:20,
-      height:20,
     },
     spacer: {
       height: 10,

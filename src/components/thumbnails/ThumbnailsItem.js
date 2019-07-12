@@ -19,6 +19,11 @@ import speed from '../../assets/images/types/speed.png'
 import toc from '../../assets/images/types/toc.png'
 import tor from '../../assets/images/types/tor.png'
 
+// SVG
+import ArrowUpIcon from '../../assets/svg/ArrowUpIcon'
+import ArrowDownIcon from '../../assets/svg/ArrowDownIcon'
+import CriticalBlackIcon from '../../assets/svg/CriticalBlackIcon'
+
 class ThumbnailsItem extends React.Component {
     constructor(props){
       super(props)
@@ -134,13 +139,13 @@ class ThumbnailsItem extends React.Component {
         this.arrow = 'ic_arrowup'
         this.alarmeType = 'Alarme haute : '
         return(
-          <Image className="float-sm-right" style={styles.arrow} source={require('../../assets/images/ArrowUp.png')}/>
+          <ArrowUpIcon/>
         )
       } else if(value.includes('low')){
         this.arrow = 'ic_arrowdown'
         this.alarmeType = 'Alarme basse : '
         return(
-          <Image className="float-sm-right" style={styles.arrow} source={require('../../assets/images/ArrowDown.png')}/>
+          <ArrowDownIcon/>
         )
       }
     }
@@ -149,7 +154,7 @@ class ThumbnailsItem extends React.Component {
       const critical = this.state.thumbnails.critical
       if(critical === true){
         return(
-          <Image className="float-sm-right" style={styles.critical} source={require('../../assets/images/critical-black.png')}/>
+          <CriticalBlackIcon/>
         )
       } else {
 
@@ -229,7 +234,7 @@ class ThumbnailsItem extends React.Component {
                 {this._critical()}
               </View>
               <View style={styles.value_container}>
-                <Text className="float-sm-left" style={styles.textButton}>{thumbnails.value}{' '}{thumbnails.unit}</Text>
+                <Text style={styles.textButton}>{thumbnails.value}{' '}{thumbnails.unit}</Text>
                 {this._arrow()}
               </View>
             </View>
@@ -278,14 +283,6 @@ class ThumbnailsItem extends React.Component {
       height: 40,
       width: 40,
       margin: 2,
-    },
-    arrow: {
-      height: 20,
-      width: 20
-    },
-    critical: {
-      height:12,
-      width: 10
     }
   });
 
