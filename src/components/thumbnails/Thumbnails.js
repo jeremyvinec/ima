@@ -2,6 +2,8 @@ import React from 'react'
 import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native'
 import ThumbnailsList from './ThumbnailsList'
 
+import {NavigationEvents} from 'react-navigation';
+
 import { connect } from 'react-redux'
 import thumbnailsApi from '../../api/thumbnailsApi'
 
@@ -20,11 +22,14 @@ class Thumbnails extends React.Component {
 
     componentDidMount(){
       // Dans la plupart des cas, il est préférable d'attendre après le montage pour charger les données. 
-      this.interval = setInterval(this._recoverThumbnails, 5000)
     }
 
     componentWillUnmount(){
       clearInterval(this.interval)
+    }
+
+    _setInterval(){
+      this.interval = setInterval(this._recoverThumbnails, 5000)  
     }
 
     _recoverThumbnails() {
@@ -40,7 +45,9 @@ class Thumbnails extends React.Component {
     render(){
       return (
         <View style={styles.container}>
-            <TouchableOpacity style={styles.header}  onPress={() => clearInterval(this.interval) + this.props.navigation.navigate('Local')}>
+            {/* Gérer le paramétrage du local */}
+            <NavigationEvents onDidFocus={() => this._setInterval()} />
+            <TouchableOpacity style={styles.header}  onPress={() => this.componentWillUnmount() + this.props.navigation.navigate('Local')}>
               <SettingsIcon/>
             </TouchableOpacity>
             <View style={styles.main}>

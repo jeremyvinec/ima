@@ -4,7 +4,7 @@ import { Svg, Path } from 'react-native-svg'
 export default class ArrowUpIcon extends React.Component {
     render(){
         return(
-            <Svg width="25" height="29.6" viewBox="0 0 76 88" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <Svg width="22" height="26" viewBox="0 0 76 88" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <Path d="M74.393 38.711L64.867 48.237C63.949 49.155 62.447 49.155 61.53 48.237L47.096 33.803V85.55C47.096 86.848 46.034 87.91 44.736 87.91H31.264C29.966 87.91 28.904 86.848 28.904 85.55V33.803L14.47 48.237C13.552 49.155 12.05 49.155 11.133 48.237L1.60702 38.711C0.689018 37.793 0.689018 36.291 1.60702 35.374L36.21 0.769999C36.7 0.279999 37.355 0.0599986 38 0.0929986C38.645 0.0599986 39.3 0.279999 39.79 0.769999L74.393 35.373C75.311 36.291 75.311 37.793 74.393 38.711Z" fill="white"/>
             </Svg>
         )

@@ -35,6 +35,7 @@ class ThumbnailsItem extends React.Component {
       this.arrow = 'ic_stat_icon_ivtracer',
       this.iconNotif = '',
       this.alarmeType = ''
+      this.localStockage = null
       this.state = {
         opacity: new Animated.Value(1),
         thumbnails: this.props.thumbnails
@@ -49,7 +50,8 @@ class ThumbnailsItem extends React.Component {
       this._color()
       this._arrow()
       this._animate()
-      //this._localNotif()
+      this._localStockage()
+      this._localNotif()
     }
 
     componentDidUpdate(nextProps){
@@ -65,39 +67,51 @@ class ThumbnailsItem extends React.Component {
     _getImageFromType(){
       const type = this.state.thumbnails.type
       //console.log(type)
-      if(type === 'temperature'){
-        this.iconThumbnails = temperature
-        this.iconNotif = 'ic_temperature'
-      } else if(type === 'hygrometry'){
-        this.iconThumbnails = hygrometry
-        this.iconNotif = 'ic_hygrometry'
-      } else if(type === 'concentration'){
-        this.iconThumbnails = concentration
-        this.iconNotif = 'ic_concentration'
-      } else if(type === 'conductivity'){
-        this.iconThumbnails = conductivity
-        this.iconNotif = 'ic_conductivity'
-      } else if(type === 'flow'){
-        this.iconThumbnails = flow
-        this.iconNotif = 'ic_flow'
-      } else if(type === 'generic'){
-        this.iconThumbnails = generic
-        this.iconNotif = 'ic_generic'
-      } else if(type === 'particles'){
-        this.iconThumbnails = particle
-        this.iconNotif = 'ic_particle'
-      } else if(type === 'pressure'){
-        this.iconThumbnails = pressure
-        this.iconNotif = 'ic_pressure'
-      } else if(type === 'speed'){
-        this.iconThumbnails = speed
-        this.iconNotif = 'ic_speed'
-      } else if(type === 'toc'){
-        this.iconThumbnails = toc
-        this.iconNotif = 'ic_toc'
-      } else if(type === 'tor'){
-        this.iconThumbnails = tor
-        this.iconNotif = 'ic_tor'
+      switch(type){
+        case 'temperature':
+            this.iconThumbnails = temperature
+            this.iconNotif = 'ic_temperature'
+            break;
+        case 'hygrometry':
+            this.iconThumbnails = hygrometry
+            this.iconNotif = 'ic_hygrometry'
+            break;
+        case 'concentration':
+            this.iconThumbnails = concentration
+            this.iconNotif = 'ic_concentration'
+            break;
+        case 'conductivity':
+            this.iconThumbnails = conductivity
+            this.iconNotif = 'ic_conductivity'
+            break;
+        case 'flow':
+            this.iconThumbnails = flow
+            this.iconNotif = 'ic_flow'
+            break;
+        case 'generic':
+            this.iconThumbnails = generic
+            this.iconNotif = 'ic_generic'
+            break;
+        case 'particles':
+            this.iconThumbnails = particle
+            this.iconNotif = 'ic_particles'
+            break;
+        case 'pressure':
+            this.iconThumbnails = pressure
+            this.iconNotif = 'ic_pressure'
+            break;
+        case 'speed':
+            this.iconThumbnails = speed
+            this.iconNotif = 'ic_speed'
+            break;
+        case 'toc':
+            this.iconThumbnails = toc
+            this.iconNotif = 'ic_toc'
+            break;
+        case 'tor':
+            this.iconThumbnails = tor
+            this.iconNotif = 'ic_tor'
+            break;
       }
     }
 
@@ -195,7 +209,7 @@ class ThumbnailsItem extends React.Component {
           largeIcon: this.iconNotif, // (optional) default: "ic_launcher"
           smallIcon: this.arrow, // (optional) default: "ic_notification" with fallback for "ic_launcher"
           actions: '["Annuler", "Acquitter"]',  // (Android only) See the doc for notification actions to know more
-          subText: "Local stockage : " + thumbnails.states, // (optional) default: none
+          subText: this.localStockage + ' : ' + thumbnails.states, // (optional) default: none
           color: "red", // (optional) default: system default
           group:'alarm',
           //ongoing: true, // (optional) set whether this is an "ongoing" notification
@@ -211,7 +225,7 @@ class ThumbnailsItem extends React.Component {
           largeIcon: this.iconNotif, // (optional) default: "ic_launcher"
           smallIcon: this.arrow, // (optional) default: "ic_notification" with fallback for "ic_launcher"
           actions: '["Annuler", "Acquitter"]',  // (Android only) See the doc for notification actions to know more
-          subText: "Local stockage : " + thumbnails.states, // (optional) default: none
+          subText: this.localStockage + ' : ' + thumbnails.states, // (optional) default: none
           color: "orange", // (optional) default: system default
           group:'prealarm',
           //ongoing: true, // (optional) set whether this is an "ongoing" notification
@@ -219,7 +233,31 @@ class ThumbnailsItem extends React.Component {
           //priority: 'high',
           //ticker: "My Notification Ticker", // (optional)
         })
+      } else {
+        PushNotification.localNotification({
+          /* iOS and Android properties */
+          title: this.alarmeType + thumbnails.name, // (optional)
+          message: thumbnails.type + ' : ' + thumbnails.value + ' ' + thumbnails.unit, // (required)
+          largeIcon: this.iconNotif, // (optional) default: "ic_launcher"
+          smallIcon: this.arrow, // (optional) default: "ic_notification" with fallback for "ic_launcher"
+          actions: '["Annuler", "Acquitter"]',  // (Android only) See the doc for notification actions to know more
+          subText: this.localStockage + ' : ' + thumbnails.states, // (optional) default: none
+          color: "green", // (optional) default: system default
+          group:'prealarm',
+          //ongoing: true, // (optional) set whether this is an "ongoing" notification
+          //importance: 'high', // (optional) set notification importance, default: high
+          //priority: 'high',
+          //ticker: "My Notification Ticker", // (optional)
+        })
       }
+    }
+
+    _localStockage(){
+      const id = this.props.thumbnails.id
+      const regex = /[.]/gi;
+      const replace = id.replace(regex, ' ')
+      const string = replace.split(' ')
+      this.localStockage = string[5]
     }
 
     render() {

@@ -8,33 +8,25 @@ class Local extends React.Component {
         super(props)
         this.state = {
             thumbnails: props.thumbnails,
-            isLoading: false
         }
     }
 
     _searchServeur(serveur){
         const serveurAction = { type: 'SERVEUR', value: serveur}
         this.props.dispatch(serveurAction)
+        console.log(this.props.dispatch(serveurAction))
     }
 
     _searchPort(port){
         const portAction = { type: 'PORT', value: port}
-        this.props.dispatch(portAction)        
+        this.props.dispatch(portAction)    
+        console.log(this.props.dispatch(portAction))    
     }
 
     _searchUser(user){
         const userAction = { type: 'USER', value: user}
         this.props.dispatch(userAction)
-    }
-
-    _displayLoading(){
-        if(this.state.isLoading){
-            return(
-                <View style={styles.loading_container}>
-                    <ActivityIndicator size='large'/>
-                </View>
-            )
-        }
+        console.log(this.props.dispatch(userAction))
     }
 
     render(){
@@ -78,7 +70,6 @@ class Local extends React.Component {
                         </View>
                     </TouchableOpacity>
                 </View>
-                {this._displayLoading()}
             </View>
         )
     }

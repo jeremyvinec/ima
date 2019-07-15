@@ -1,11 +1,12 @@
 import React from 'react'
 import { View, StyleSheet, Text, TextInput, TouchableOpacity } from 'react-native'
+
+// SVG
 import AckIcon from '../assets/svg/AckIcon'
 
 class Release extends React.Component{
 
     render(){
-        console.log(this.props.navigation.getParam('idThumbnails'))
         return(
             <View style={styles.container}>
                 <Text style={styles.title}>
@@ -20,7 +21,6 @@ class Release extends React.Component{
                             maxLength={40}
                             placeholder='Identifiant: '
                             placeholderTextColor= '#C4C4C4'
-                            onChangeText={(serveur) => this._searchServeur(serveur)}
                         />
                         <TextInput
                             style={styles.textInput}
@@ -28,7 +28,6 @@ class Release extends React.Component{
                             maxLength={40}
                             placeholder='Mots de passe: '
                             placeholderTextColor= '#C4C4C4'
-                            onChangeText={(serveur) => this._searchServeur(serveur)}
                         />
                         <TextInput
                             style={styles.textInput}
@@ -36,12 +35,11 @@ class Release extends React.Component{
                             multiline={true}
                             placeholder='Commentaire: '
                             placeholderTextColor= '#C4C4C4'
-                            onChangeText={(serveur) => this._searchServeur(serveur)}
                         />
                     </View>
                     
                     <View style={styles.button_container}>
-                        <TouchableOpacity onPress={() => this.props.navigation.navigate('Thumbnails')}>
+                        <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
                             <View style={styles.button}>
                                 <Text style={styles.text}>ANNULER</Text>
                             </View>
@@ -93,7 +91,8 @@ const styles = StyleSheet.create({
         marginTop:50,
         fontWeight: "bold",
         color: "#fff",
-        textAlign: 'center'
+        textAlign: 'center',
+        textTransform: 'uppercase'
     },
     text: {
         color: "#fff",
