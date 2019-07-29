@@ -1,6 +1,7 @@
 import React from 'react'
-import { StyleSheet, View, Text, TouchableOpacity, Image, Animated } from 'react-native'
-import PushNotification from 'react-native-push-notification';
+import { StyleSheet, View, Text, TouchableOpacity, Image, Animated,  } from 'react-native'
+import PushNotification from 'react-native-push-notification'
+
 // Accéder à Navigation Prop
 import { withNavigation } from 'react-navigation'
 
@@ -197,6 +198,19 @@ class ThumbnailsItem extends React.Component {
     }
 
     _localNotif() {
+
+      // Clique sur la notification
+      const { navigation, displayRelease } = this.props
+      PushNotification.configure({
+        onNotification: function(notification){
+          //console.log(notification.userInteraction)
+          const clicked = notification.userInteraction
+          if(clicked){
+            navigation.navigate('Release') + displayRelease(thumbnails.name)
+          }
+        }
+      })
+
       console.log('notification')
       value = this.value
       thumbnails = this.props.thumbnails
@@ -208,7 +222,6 @@ class ThumbnailsItem extends React.Component {
           message: thumbnails.type + ' : ' + thumbnails.value + ' ' + thumbnails.unit, // (required)
           largeIcon: this.iconNotif, // (optional) default: "ic_launcher"
           smallIcon: this.arrow, // (optional) default: "ic_notification" with fallback for "ic_launcher"
-          actions: '["Annuler", "Acquitter"]',  // (Android only) See the doc for notification actions to know more
           subText: this.localStockage + ' : ' + thumbnails.states, // (optional) default: none
           color: "red", // (optional) default: system default
           group:'alarm',
@@ -224,25 +237,8 @@ class ThumbnailsItem extends React.Component {
           message: thumbnails.type + ' : ' + thumbnails.value + ' ' + thumbnails.unit, // (required)
           largeIcon: this.iconNotif, // (optional) default: "ic_launcher"
           smallIcon: this.arrow, // (optional) default: "ic_notification" with fallback for "ic_launcher"
-          actions: '["Annuler", "Acquitter"]',  // (Android only) See the doc for notification actions to know more
           subText: this.localStockage + ' : ' + thumbnails.states, // (optional) default: none
           color: "orange", // (optional) default: system default
-          group:'prealarm',
-          //ongoing: true, // (optional) set whether this is an "ongoing" notification
-          //importance: 'high', // (optional) set notification importance, default: high
-          //priority: 'high',
-          //ticker: "My Notification Ticker", // (optional)
-        })
-      } else {
-        PushNotification.localNotification({
-          /* iOS and Android properties */
-          title: this.alarmeType + thumbnails.name, // (optional)
-          message: thumbnails.type + ' : ' + thumbnails.value + ' ' + thumbnails.unit, // (required)
-          largeIcon: this.iconNotif, // (optional) default: "ic_launcher"
-          smallIcon: this.arrow, // (optional) default: "ic_notification" with fallback for "ic_launcher"
-          actions: '["Annuler", "Acquitter"]',  // (Android only) See the doc for notification actions to know more
-          subText: this.localStockage + ' : ' + thumbnails.states, // (optional) default: none
-          color: "green", // (optional) default: system default
           group:'prealarm',
           //ongoing: true, // (optional) set whether this is an "ongoing" notification
           //importance: 'high', // (optional) set notification importance, default: high
@@ -261,9 +257,9 @@ class ThumbnailsItem extends React.Component {
     }
 
     render() {
-      const { thumbnails, displayRelease } = this.props
+      const { thumbnails, displayRelease, navigation } = this.props
       return (
-        <TouchableOpacity onPress={() => this.props.navigation.navigate('Release') + displayRelease(thumbnails.name)} >
+        <TouchableOpacity onPress={() => navigation.navigate('Release') + displayRelease(thumbnails.name)} >
           <Animated.View style={[{backgroundColor: this.backgroundColor, opacity: this.state.opacity},styles.button, styles.main_container]}>
           <Image style={styles.imageButton} source={this.iconThumbnails}/>
             <View style={styles.content_container}>
