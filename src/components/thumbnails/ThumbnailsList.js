@@ -9,11 +9,16 @@ class ThumbnailsList extends React.Component {
     super(props)
     this.state = {
       thumbnails: [],
+      isFetching: false
     }
   }
 
   _displayRelease = (idThumbnails) => {
     this.props.navigation.navigate("Release", { idThumbnails: idThumbnails })
+  }
+
+  _onRefresh() {
+    this.setState({ isFetching: true })
   }
 
   render() {
@@ -24,6 +29,10 @@ class ThumbnailsList extends React.Component {
           data={this.props.thumbnails}
           extraData={this.state}
           keyExtractor={(item) => item.id}
+          refreshing={this.state.isFetching}
+          onRefresh={() => this._onRefresh()}
+          onEndReached={() => this.onEndReached()}
+          onEndReachedThreshold={1}
           renderItem={({item}) => ( 
             <ThumbnailsItem 
               thumbnails={item}

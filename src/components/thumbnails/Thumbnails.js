@@ -15,13 +15,10 @@ class Thumbnails extends React.Component {
     constructor(props){
       super(props)
       this.state = {
-        thumbnails: []
+        thumbnails: [],
+        isFetching: false
       }
       this._recoverThumbnails = this._recoverThumbnails.bind(this);
-    }
-
-    componentDidMount(){
-      // Dans la plupart des cas, il est préférable d'attendre après le montage pour charger les données. 
     }
 
     componentWillUnmount(){
@@ -37,12 +34,14 @@ class Thumbnails extends React.Component {
       const { searchedServeur, searchedPort, searchedUser } = this.props
       thumbnailsApi.getAllThumbnails(searchedServeur, searchedPort, searchedUser).then(data => {
         this.setState({
-          thumbnails: data.thumbnails
+          thumbnails: data.thumbnails,
+          isFetching: false
         })
       })
     }
 
     render(){
+      const { thumbnails } = this.state
       return (
         <View style={styles.container}>
             {/* Gérer le paramétrage du local */}
@@ -54,12 +53,12 @@ class Thumbnails extends React.Component {
               <Image style={styles.logo} source={require('../../assets/images/logo.png')}/>
               <View style={styles.spacer}/>
               <View>
-                  <Text style={styles.text}>{this.state.thumbnails.length} BOUCLES EN ALARMES ET/OU A ACQUITTER</Text>
+                  <Text style={styles.text}>{thumbnails.length} BOUCLES EN ALARMES ET/OU A ACQUITTER</Text>
               </View>
               <View style={styles.spacer}/>
               <View style={styles.thumbnails_list}>
                 <ThumbnailsList
-                    thumbnails={this.state.thumbnails}
+                    thumbnails={thumbnails}
                   />
               </View>
             </View>
@@ -104,7 +103,6 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
-    //thumbnails: state.thumbnails,
     searchedServeur: state.searchedServeur,
     searchedPort: state.searchedPort,
     searchedUser:state.searchedUser

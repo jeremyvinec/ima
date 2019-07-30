@@ -41,8 +41,8 @@ class ThumbnailsItem extends React.Component {
         opacity: new Animated.Value(1),
         thumbnails: this.props.thumbnails
       }
-      const states = this.state.thumbnails.states
-      this.value = states.split(' ')
+      this.states = this.state.thumbnails.states
+      console.log(this.states)
     }
 
     componentDidMount(){
@@ -52,7 +52,7 @@ class ThumbnailsItem extends React.Component {
       this._arrow()
       this._animate()
       this._localStockage()
-      this._localNotif()
+      //this._localNotif()
     }
 
     componentDidUpdate(nextProps){
@@ -61,6 +61,8 @@ class ThumbnailsItem extends React.Component {
         this._localNotif()
       } else if(nextProps.thumbnails.states != this.props.thumbnails.states){
         console.log('new states')
+        console.log('Prev props | ' + nextProps.thumbnails.states)
+        console.log('New props | ' + this.props.thumbnails.states)
         this._localNotif()
       }
     }
@@ -117,46 +119,43 @@ class ThumbnailsItem extends React.Component {
     }
 
     _backgroundColor(){
-      value = this.value
-      //console.log(value)
-      if(value.includes('hs')){
-        this.backgroundColor = '#ddd' // lighten-grey
-      } else if(value.includes('alarm')){
-        this.backgroundColor = '#fd5d54' // $pale-red
-        //this._localNotif()
-      } else if(value.includes('prealarm')){
+      states = this.states
+      if(states.includes('hs')){
+        this.backgroundColor = '#fff' // $white
+      } else if(states.includes('alarm')){
+        this.backgroundColor = '#fd5d54' // $lime-red
+      } else if(states.includes('prealarm')){
         this.backgroundColor = '#fdb44b' // $pale-orange
-        //this._localNotif()
-      } else if(value.includes('prod')){
-        this.backgroundColor = '#e8ffcd' // $pale-green
+      } else if(states.includes('prod')){
+        this.backgroundColor = '#84ef42' // $flash-green
       }
     }
 
     _color(){
-      value = this.value
-      if(value.includes('qaa')){
+      states = this.states
+      if(states.includes('qaa')){
         this.color = '#005dbf' //$lime-blue
-      } else if(value.includes('qai')){
+      } else if(states.includes('qai')){
         this.color = '#005dbf' //$lime-blue
-      } else if(value.includes('qai')){
+      } else if(states.includes('qai')){
         this.color = '#005dbf', //$lime-blue
         this.fontStyle = 'italic'
-      } else if(value.includes('hs')){
+      } else if(states.includes('hs')){
         this.color = '#9a9a9a' // $grey
-      } else if(value.includes('notack')){
+      } else if(states.includes('notack')){
         this.fontWeight = '700'
       }
     }
 
     _arrow(){
-      value = this.value       
-      if(value.includes('high')){
+      states = this.states       
+      if(states.includes('high')){
         this.arrow = 'ic_arrowup'
         this.alarmeType = 'Alarme haute : '
         return(
           <ArrowUpIcon/>
         )
-      } else if(value.includes('low')){
+      } else if(states.includes('low')){
         this.arrow = 'ic_arrowdown'
         this.alarmeType = 'Alarme basse : '
         return(
@@ -177,8 +176,8 @@ class ThumbnailsItem extends React.Component {
     }
 
     _animate(){
-      value = this.value
-      if(value.includes('notack')){
+      states = this.states
+      if(states.includes('notack')){
         Animated.loop(
           Animated.sequence([
             Animated.timing(this.state.opacity, {
@@ -198,6 +197,37 @@ class ThumbnailsItem extends React.Component {
     }
 
     _localNotif() {
+      console.log('notification')
+      states = this.states
+      thumbnails = this.props.thumbnails
+      this.lastId++;
+
+      // Si c'est une alarm
+      if(states.includes('alarm')){
+        PushNotification.localNotification({
+          /* iOS and Android properties */
+          title: this.alarmeType + thumbnails.name, // (optional)
+          message: thumbnails.type + ' : ' + thumbnails.value + ' ' + thumbnails.unit, // (required)
+          largeIcon: this.iconNotif, // (optional) default: "ic_launcher"
+          smallIcon: this.arrow, // (optional) default: "ic_notification" with fallback for "ic_launcher"
+          subText: this.localStockage + ' : ' + thumbnails.states, // (optional) default: none
+          color: "red", // (optional) default: system default
+          group:'alarm'
+        })
+      } 
+      // Si c'est une prealarm
+      else if(states.includes('prealarm')){
+        PushNotification.localNotification({
+          /* iOS and Android properties */
+          title: this.alarmeType + thumbnails.name, // (optional)
+          message: thumbnails.type + ' : ' + thumbnails.value + ' ' + thumbnails.unit, // (required)
+          largeIcon: this.iconNotif, // (optional) default: "ic_launcher"
+          smallIcon: this.arrow, // (optional) default: "ic_notification" with fallback for "ic_launcher"
+          subText: this.localStockage + ' : ' + thumbnails.states, // (optional) default: none
+          color: "orange", // (optional) default: system default
+          group:'prealarm'
+        })
+      }
 
       // Clique sur la notification
       const { navigation, displayRelease } = this.props
@@ -211,41 +241,6 @@ class ThumbnailsItem extends React.Component {
         }
       })
 
-      console.log('notification')
-      value = this.value
-      thumbnails = this.props.thumbnails
-      this.lastId++;
-      if(this.value.includes('alarm')){
-        PushNotification.localNotification({
-          /* iOS and Android properties */
-          title: this.alarmeType + thumbnails.name, // (optional)
-          message: thumbnails.type + ' : ' + thumbnails.value + ' ' + thumbnails.unit, // (required)
-          largeIcon: this.iconNotif, // (optional) default: "ic_launcher"
-          smallIcon: this.arrow, // (optional) default: "ic_notification" with fallback for "ic_launcher"
-          subText: this.localStockage + ' : ' + thumbnails.states, // (optional) default: none
-          color: "red", // (optional) default: system default
-          group:'alarm',
-          //ongoing: true, // (optional) set whether this is an "ongoing" notification
-          //importance: 'high', // (optional) set notification importance, default: high
-          //priority: 'high',
-          //ticker: "My Notification Ticker", // (optional)
-        })
-      } else if(this.value.includes('prealarm')){
-        PushNotification.localNotification({
-          /* iOS and Android properties */
-          title: this.alarmeType + thumbnails.name, // (optional)
-          message: thumbnails.type + ' : ' + thumbnails.value + ' ' + thumbnails.unit, // (required)
-          largeIcon: this.iconNotif, // (optional) default: "ic_launcher"
-          smallIcon: this.arrow, // (optional) default: "ic_notification" with fallback for "ic_launcher"
-          subText: this.localStockage + ' : ' + thumbnails.states, // (optional) default: none
-          color: "orange", // (optional) default: system default
-          group:'prealarm',
-          //ongoing: true, // (optional) set whether this is an "ongoing" notification
-          //importance: 'high', // (optional) set notification importance, default: high
-          //priority: 'high',
-          //ticker: "My Notification Ticker", // (optional)
-        })
-      }
     }
 
     _localStockage(){
@@ -322,7 +317,7 @@ class ThumbnailsItem extends React.Component {
 
   const mapStateToProps = (state) => {
     return {
-      thumbnailsItem: state.thumbnailsItem
+      //thumbnailsItem: state.thumbnailsItem
     }
   }
 

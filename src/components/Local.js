@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, TextInput, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native'
+import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 
 class Local extends React.Component {
@@ -124,6 +124,7 @@ const styles = StyleSheet.create({
         height: 40,
         width: 210,
         textAlign: 'center',
+        color: 'white',
         borderColor: 'white',
         borderWidth: 1
     },
