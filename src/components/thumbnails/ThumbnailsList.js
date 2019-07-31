@@ -2,23 +2,16 @@ import React from 'react'
 import { StyleSheet, FlatList } from 'react-native'
 import ThumbnailsItem from './ThumbnailsItem'
 import { withNavigation } from 'react-navigation'
+import Thumbnails from './Thumbnails'
 
 class ThumbnailsList extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = {
-      thumbnails: [],
-      isFetching: false
-    }
   }
 
   _displayRelease = (idThumbnails) => {
     this.props.navigation.navigate("Release", { idThumbnails: idThumbnails })
-  }
-
-  _onRefresh() {
-    this.setState({ isFetching: true })
   }
 
   render() {
@@ -29,10 +22,7 @@ class ThumbnailsList extends React.Component {
           data={this.props.thumbnails}
           extraData={this.state}
           keyExtractor={(item) => item.id}
-          refreshing={this.state.isFetching}
-          onRefresh={() => this._onRefresh()}
-          onEndReached={() => this.onEndReached()}
-          onEndReachedThreshold={1}
+          initialNumToRender={100}
           renderItem={({item}) => ( 
             <ThumbnailsItem 
               thumbnails={item}

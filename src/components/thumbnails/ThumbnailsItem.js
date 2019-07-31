@@ -7,28 +7,25 @@ import { withNavigation } from 'react-navigation'
 
 import { connect } from 'react-redux'
 
-// ICONS
-import temperature from '../../assets/images/types/temperature.png'
-import hygrometry from '../../assets/images/types/hygrometry.png'
-import concentration from '../../assets/images/types/concentration.png'
-import conductivity from '../../assets/images/types/conductivity.png'
-import flow from '../../assets/images/types/flow.png'
-import generic from '../../assets/images/types/generic.png'
-import particle from '../../assets/images/types/particle.png'
-import pressure from '../../assets/images/types/pressure.png'
-import speed from '../../assets/images/types/speed.png'
-import toc from '../../assets/images/types/toc.png'
-import tor from '../../assets/images/types/tor.png'
-
 // SVG
 import ArrowUpIcon from '../../assets/svg/ArrowUpIcon'
 import ArrowDownIcon from '../../assets/svg/ArrowDownIcon'
 import CriticalBlackIcon from '../../assets/svg/CriticalBlackIcon'
+import OfflineIcon from '../../assets/svg/OfflineIcon'
+import RoomOutOfProdIcon from '../../assets/svg/RoomOutOfProdIcon'
+import HygrometryIcon from '../../assets/svg/HygrometryIcon'
+import TemperatureIcon from '../../assets/svg/TemperatureIcon'
+import ConcentrationIcon from '../../assets/svg/ConcentrationIcon'
+import ConductivityIcon from '../../assets/svg/ConductivityIcon'
+import FlowIcon from '../../assets/svg/FlowIcon'
+import ParticlesIcon from '../../assets/svg/ParticlesIcon'
+import PressureIcon from '../../assets/svg/PressureIcon'
+import SpeedIcon from '../../assets/svg/SpeedIcon'
+import TocIcon from '../../assets/svg/TocIcon'
 
 class ThumbnailsItem extends React.Component {
     constructor(props){
       super(props)
-      this.iconThumbnails = [],
       this.backgroundColor = '#8ee06d',
       this.color = '#fff',
       this.fontStyle = 'normal',
@@ -38,15 +35,12 @@ class ThumbnailsItem extends React.Component {
       this.alarmeType = ''
       this.localStockage = null
       this.state = {
-        opacity: new Animated.Value(1),
-        thumbnails: this.props.thumbnails
+        opacity: new Animated.Value(1)
       }
-      this.states = this.state.thumbnails.states
-      console.log(this.states)
+      this.states = this.props.thumbnails.states
     }
 
-    componentDidMount(){
-      this._getImageFromType()
+    componentWillMount(){
       this._backgroundColor()
       this._color()
       this._arrow()
@@ -61,58 +55,58 @@ class ThumbnailsItem extends React.Component {
         this._localNotif()
       } else if(nextProps.thumbnails.states != this.props.thumbnails.states){
         console.log('new states')
-        console.log('Prev props | ' + nextProps.thumbnails.states)
-        console.log('New props | ' + this.props.thumbnails.states)
+        //console.log('Prev props | ' + nextProps.thumbnails.states)
+        //console.log('New props | ' + this.props.thumbnails.states)
         this._localNotif()
       }
     }
 
     _getImageFromType(){
-      const type = this.state.thumbnails.type
+      const type = this.props.thumbnails.type
       //console.log(type)
       switch(type){
         case 'temperature':
-            this.iconThumbnails = temperature
+            return( <TemperatureIcon/> )
             this.iconNotif = 'ic_temperature'
             break;
         case 'hygrometry':
-            this.iconThumbnails = hygrometry
+            return( <HygrometryIcon/> )
             this.iconNotif = 'ic_hygrometry'
             break;
         case 'concentration':
-            this.iconThumbnails = concentration
+            return( <ConcentrationIcon/> )
             this.iconNotif = 'ic_concentration'
             break;
         case 'conductivity':
-            this.iconThumbnails = conductivity
+            return ( <ConductivityIcon/> )
             this.iconNotif = 'ic_conductivity'
             break;
         case 'flow':
-            this.iconThumbnails = flow
+            return ( <FlowIcon/> )
             this.iconNotif = 'ic_flow'
             break;
         case 'generic':
-            this.iconThumbnails = generic
+            // generic
             this.iconNotif = 'ic_generic'
             break;
         case 'particles':
-            this.iconThumbnails = particle
+            return( <ParticlesIcon/> )
             this.iconNotif = 'ic_particles'
             break;
         case 'pressure':
-            this.iconThumbnails = pressure
+            return( <PressureIcon/> )
             this.iconNotif = 'ic_pressure'
             break;
         case 'speed':
-            this.iconThumbnails = speed
+            return( <SpeedIcon/> )
             this.iconNotif = 'ic_speed'
             break;
         case 'toc':
-            this.iconThumbnails = toc
+            return( <TocIcon/> )
             this.iconNotif = 'ic_toc'
             break;
         case 'tor':
-            this.iconThumbnails = tor
+            //tor
             this.iconNotif = 'ic_tor'
             break;
       }
@@ -120,6 +114,7 @@ class ThumbnailsItem extends React.Component {
 
     _backgroundColor(){
       states = this.states
+
       if(states.includes('hs')){
         this.backgroundColor = '#fff' // $white
       } else if(states.includes('alarm')){
@@ -128,6 +123,8 @@ class ThumbnailsItem extends React.Component {
         this.backgroundColor = '#fdb44b' // $pale-orange
       } else if(states.includes('prod')){
         this.backgroundColor = '#84ef42' // $flash-green
+      } else if(states.includes('offline')){
+        this.backgroundColor = '#fff' // $White
       }
     }
 
@@ -144,6 +141,8 @@ class ThumbnailsItem extends React.Component {
         this.color = '#9a9a9a' // $grey
       } else if(states.includes('notack')){
         this.fontWeight = '700'
+      } else if(states.includes('offline')){
+        this.color = '#ddd'
       }
     }
 
@@ -165,13 +164,31 @@ class ThumbnailsItem extends React.Component {
     }
 
     _critical(){
-      const critical = this.state.thumbnails.critical
+      const critical = this.props.thumbnails.critical
       if(critical === true){
         return(
           <CriticalBlackIcon/>
         )
       } else {
 
+      }
+    }
+
+    _offline(){
+      states = this.states
+      if(states.includes('offline')){
+        return(
+          <OfflineIcon/>
+        )
+      }
+    }
+
+    _roomoutofprod(){
+      states = this.states
+      if(states.includes('roomoutofprod')){
+        return(
+          <RoomOutOfProdIcon/>
+        )
       }
     }
 
@@ -198,12 +215,10 @@ class ThumbnailsItem extends React.Component {
 
     _localNotif() {
       console.log('notification')
-      states = this.states
       thumbnails = this.props.thumbnails
       this.lastId++;
 
-      // Si c'est une alarm
-      if(states.includes('alarm')){
+      if(this.props.thumbnails.states.includes('alarm')){
         PushNotification.localNotification({
           /* iOS and Android properties */
           title: this.alarmeType + thumbnails.name, // (optional)
@@ -215,8 +230,7 @@ class ThumbnailsItem extends React.Component {
           group:'alarm'
         })
       } 
-      // Si c'est une prealarm
-      else if(states.includes('prealarm')){
+      else if(this.props.thumbnails.states.includes('prealarm')){
         PushNotification.localNotification({
           /* iOS and Android properties */
           title: this.alarmeType + thumbnails.name, // (optional)
@@ -256,7 +270,7 @@ class ThumbnailsItem extends React.Component {
       return (
         <TouchableOpacity onPress={() => navigation.navigate('Release') + displayRelease(thumbnails.name)} >
           <Animated.View style={[{backgroundColor: this.backgroundColor, opacity: this.state.opacity},styles.button, styles.main_container]}>
-          <Image style={styles.imageButton} source={this.iconThumbnails}/>
+          {this._getImageFromType()}
             <View style={styles.content_container}>
               <View style={styles.header_container}>
                 <Text style={[{color: this.color, fontStyle: this.fontStyle, fontWeight: this.fontWeight},styles.title_text]}>{thumbnails.name}</Text>
@@ -265,6 +279,8 @@ class ThumbnailsItem extends React.Component {
               <View style={styles.value_container}>
                 <Text style={styles.textButton}>{thumbnails.value}{' '}{thumbnails.unit}</Text>
                 {this._arrow()}
+                {this._offline()}
+                {this._roomoutofprod()}
               </View>
             </View>
           </Animated.View>
@@ -307,11 +323,6 @@ class ThumbnailsItem extends React.Component {
     textButton:{
       fontSize: 17,
       fontWeight: '700',
-    },
-    imageButton: {
-      height: 40,
-      width: 40,
-      margin: 2,
     }
   });
 

@@ -1,6 +1,7 @@
 import React from 'react'
-import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native'
+import { StyleSheet, View, Text, Image, TouchableOpacity, NetInfo, Dimensions } from 'react-native'
 import ThumbnailsList from './ThumbnailsList'
+import Offline from '../Offline'
 
 import {NavigationEvents} from 'react-navigation';
 
@@ -10,13 +11,15 @@ import thumbnailsApi from '../../api/thumbnailsApi'
 // SVG
 import SettingsIcon from '../../assets/svg/SettingsIcon'
 
+const { width } = Dimensions.get('window');
+
 class Thumbnails extends React.Component {
 
     constructor(props){
       super(props)
       this.state = {
         thumbnails: [],
-        isFetching: false
+        isConnected: true
       }
       this._recoverThumbnails = this._recoverThumbnails.bind(this);
     }
@@ -35,9 +38,17 @@ class Thumbnails extends React.Component {
       thumbnailsApi.getAllThumbnails(searchedServeur, searchedPort, searchedUser).then(data => {
         this.setState({
           thumbnails: data.thumbnails,
-          isFetching: false
+          isConnected: false
         })
       })
+    }
+
+    _offline(){
+      return(
+        <View style={styles.offlineContainer}>
+          <Text style={styles.offlineText}>No Internet Connection</Text>
+        </View>
+      )
     }
 
     render(){
@@ -45,6 +56,7 @@ class Thumbnails extends React.Component {
       return (
         <View style={styles.container}>
             {/* Gérer le paramétrage du local */}
+            {/*this._offline()*/}
             <NavigationEvents onDidFocus={() => this._setInterval()} />
             <TouchableOpacity style={styles.header}  onPress={() => this.componentWillUnmount() + this.props.navigation.navigate('Local')}>
               <SettingsIcon/>
@@ -98,6 +110,16 @@ const styles = StyleSheet.create({
     },
     local: {
       textAlign: 'right'
+    },
+    offlineContainer: {
+      backgroundColor: '#b52424',
+      height: 30,
+      justifyContent: 'center',
+      alignItems: 'center',
+      flexDirection: 'row',
+      position: 'absolute',
+      width,
+      top: 30
     }
 })
 
