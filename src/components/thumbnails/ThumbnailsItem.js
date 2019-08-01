@@ -55,8 +55,8 @@ class ThumbnailsItem extends React.Component {
         this._localNotif()
       } else if(nextProps.thumbnails.states != this.props.thumbnails.states){
         console.log('new states')
-        //console.log('Prev props | ' + nextProps.thumbnails.states)
-        //console.log('New props | ' + this.props.thumbnails.states)
+        console.log('Prev props | ' + nextProps.thumbnails.states)
+        console.log('New props | ' + this.props.thumbnails.states)
         this._localNotif()
       }
     }
@@ -115,34 +115,45 @@ class ThumbnailsItem extends React.Component {
     _backgroundColor(){
       states = this.states
 
-      if(states.includes('hs')){
-        this.backgroundColor = '#fff' // $white
-      } else if(states.includes('alarm')){
-        this.backgroundColor = '#fd5d54' // $lime-red
-      } else if(states.includes('prealarm')){
-        this.backgroundColor = '#fdb44b' // $pale-orange
-      } else if(states.includes('prod')){
-        this.backgroundColor = '#84ef42' // $flash-green
-      } else if(states.includes('offline')){
-        this.backgroundColor = '#fff' // $White
+      switch(true){
+        case /hs/.test(states):
+            this.backgroundColor = '#fff' // $white
+            break;
+        case /^alarm/.test(states):
+            this.backgroundColor = '#fd5d54' // $lime-red
+            break;
+        case /prealarm/.test(states):
+            this.backgroundColor = '#fdb44b' // $pale-orange
+            break;
+        case /prod/.test(states):
+            this.backgroundColor = '#84ef42' // $flash-green
+            break;
+        case /offline/.test(states):
+            this.backgroundColor = '#fff' // $white
+            break;
       }
     }
 
     _color(){
       states = this.states
-      if(states.includes('qaa')){
-        this.color = '#005dbf' //$lime-blue
-      } else if(states.includes('qai')){
-        this.color = '#005dbf' //$lime-blue
-      } else if(states.includes('qai')){
-        this.color = '#005dbf', //$lime-blue
-        this.fontStyle = 'italic'
-      } else if(states.includes('hs')){
-        this.color = '#9a9a9a' // $grey
-      } else if(states.includes('notack')){
-        this.fontWeight = '700'
-      } else if(states.includes('offline')){
-        this.color = '#ddd'
+
+      switch(true){
+        case /qaa/.test(states):
+            this.color = '#005dbf' //$lime-blue
+            break;
+        case /qai/.test(states):
+            this.color = '#005dbf' //$lime-blue
+            this.fontStyle = 'italic'
+            break;
+        case /hs/.test(states):
+            this.color = '#9a9a9a' // $grey
+            break;
+        case /notack/.test(states):
+            this.fontWeight = '700'
+            break;
+        case /offline/.test(states):
+            this.color = '#ddd'
+            break;
       }
     }
 
@@ -218,30 +229,34 @@ class ThumbnailsItem extends React.Component {
       thumbnails = this.props.thumbnails
       this.lastId++;
 
-      if(this.props.thumbnails.states.includes('alarm')){
-        PushNotification.localNotification({
-          /* iOS and Android properties */
-          title: this.alarmeType + thumbnails.name, // (optional)
-          message: thumbnails.type + ' : ' + thumbnails.value + ' ' + thumbnails.unit, // (required)
-          largeIcon: this.iconNotif, // (optional) default: "ic_launcher"
-          smallIcon: this.arrow, // (optional) default: "ic_notification" with fallback for "ic_launcher"
-          subText: this.localStockage + ' : ' + thumbnails.states, // (optional) default: none
-          color: "red", // (optional) default: system default
-          group:'alarm'
-        })
-      } 
-      else if(this.props.thumbnails.states.includes('prealarm')){
-        PushNotification.localNotification({
-          /* iOS and Android properties */
-          title: this.alarmeType + thumbnails.name, // (optional)
-          message: thumbnails.type + ' : ' + thumbnails.value + ' ' + thumbnails.unit, // (required)
-          largeIcon: this.iconNotif, // (optional) default: "ic_launcher"
-          smallIcon: this.arrow, // (optional) default: "ic_notification" with fallback for "ic_launcher"
-          subText: this.localStockage + ' : ' + thumbnails.states, // (optional) default: none
-          color: "orange", // (optional) default: system default
-          group:'prealarm'
-        })
+      switch(true){
+        case /^alarm/.test(this.props.thumbnails.states):
+            PushNotification.localNotification({
+              /* iOS and Android properties */
+              title: this.alarmeType + thumbnails.name, // (optional)
+              message: thumbnails.type + ' : ' + thumbnails.value + ' ' + thumbnails.unit, // (required)
+              largeIcon: this.iconNotif, // (optional) default: "ic_launcher"
+              smallIcon: this.arrow, // (optional) default: "ic_notification" with fallback for "ic_launcher"
+              subText: this.localStockage + ' : ' + thumbnails.states, // (optional) default: none
+              color: "red", // (optional) default: system default
+              group:'alarm'
+            })
+            break;
+        case /prealarm/.test(this.props.thumbnails.states):
+            PushNotification.localNotification({
+              /* iOS and Android properties */
+              title: this.alarmeType + thumbnails.name, // (optional)
+              message: thumbnails.type + ' : ' + thumbnails.value + ' ' + thumbnails.unit, // (required)
+              largeIcon: this.iconNotif, // (optional) default: "ic_launcher"
+              smallIcon: this.arrow, // (optional) default: "ic_notification" with fallback for "ic_launcher"
+              subText: this.localStockage + ' : ' + thumbnails.states, // (optional) default: none
+              color: "#fdb44b", // (optional) default: system default
+              group:'prealarm'
+            })
+            break;
       }
+
+      
 
       // Clique sur la notification
       const { navigation, displayRelease } = this.props

@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View, Text, Image, TouchableOpacity, NetInfo, Dimensions, ActivityIndicator } from 'react-native'
+import { StyleSheet, View, Text, Image, TouchableOpacity, Dimensions, ActivityIndicator } from 'react-native'
 import ThumbnailsList from './ThumbnailsList'
 import Offline from '../Offline'
 
@@ -71,7 +71,7 @@ class Thumbnails extends React.Component {
       return (
         <View style={styles.container}>
             {/* Gérer le paramétrage du local */}
-            <View>{this._offline()}</View>
+            {this._offline()}
             <NavigationEvents onDidFocus={() => this._setInterval()} />
             <TouchableOpacity style={styles.header}  onPress={() => this.componentWillUnmount() + this.props.navigation.navigate('Local')}>
               <SettingsIcon/>
@@ -89,6 +89,7 @@ class Thumbnails extends React.Component {
                   />
               </View>
             </View>
+            
             {this._displayLoading()}
         </View>
       )
@@ -142,7 +143,7 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       alignItems: 'center',
       flexDirection: 'row',
-      position: 'absolute',
+      //position: 'absolute',
       width,
       top: 30
     },
