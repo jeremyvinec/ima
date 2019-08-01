@@ -2,7 +2,6 @@ import React from 'react'
 import { StyleSheet, FlatList } from 'react-native'
 import ThumbnailsItem from './ThumbnailsItem'
 import { withNavigation } from 'react-navigation'
-import Thumbnails from './Thumbnails'
 
 class ThumbnailsList extends React.Component {
 

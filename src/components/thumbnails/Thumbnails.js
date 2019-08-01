@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View, Text, Image, TouchableOpacity, NetInfo, Dimensions } from 'react-native'
+import { StyleSheet, View, Text, Image, TouchableOpacity, NetInfo, Dimensions, ActivityIndicator } from 'react-native'
 import ThumbnailsList from './ThumbnailsList'
 import Offline from '../Offline'
 
@@ -19,7 +19,8 @@ class Thumbnails extends React.Component {
       super(props)
       this.state = {
         thumbnails: [],
-        isConnected: true
+        isConnected: true,
+        isLoading: false
       }
       this._recoverThumbnails = this._recoverThumbnails.bind(this);
     }
@@ -34,21 +35,35 @@ class Thumbnails extends React.Component {
 
     _recoverThumbnails() {
       console.log('update')
+      this.setState({ isLoading: true })
       const { searchedServeur, searchedPort, searchedUser } = this.props
       thumbnailsApi.getAllThumbnails(searchedServeur, searchedPort, searchedUser).then(data => {
         this.setState({
           thumbnails: data.thumbnails,
+          isLoading: false,
           isConnected: false
         })
       })
     }
 
+    _displayLoading() {
+      if (this.state.isLoading) {
+        return (
+          <View style={styles.loading_container}>
+            <ActivityIndicator size='large' />
+          </View>
+        )
+      }
+    }
+
     _offline(){
-      return(
-        <View style={styles.offlineContainer}>
-          <Text style={styles.offlineText}>No Internet Connection</Text>
-        </View>
-      )
+      if(this.state.isConnected){
+        return(
+          <View style={styles.offlineContainer}>
+            <Text style={styles.offlineText}>Veuillez saisir vos paramètres du local</Text>
+          </View>
+        )
+      }
     }
 
     render(){
@@ -56,7 +71,7 @@ class Thumbnails extends React.Component {
       return (
         <View style={styles.container}>
             {/* Gérer le paramétrage du local */}
-            {/*this._offline()*/}
+            <View>{this._offline()}</View>
             <NavigationEvents onDidFocus={() => this._setInterval()} />
             <TouchableOpacity style={styles.header}  onPress={() => this.componentWillUnmount() + this.props.navigation.navigate('Local')}>
               <SettingsIcon/>
@@ -74,6 +89,7 @@ class Thumbnails extends React.Component {
                   />
               </View>
             </View>
+            {this._displayLoading()}
         </View>
       )
     }
@@ -111,8 +127,17 @@ const styles = StyleSheet.create({
     local: {
       textAlign: 'right'
     },
+    loading_container: {
+      position: 'absolute',
+      left: 0,
+      right: 0,
+      top: 100,
+      bottom: 0,
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
     offlineContainer: {
-      backgroundColor: '#b52424',
+      backgroundColor: '#fd5d54',
       height: 30,
       justifyContent: 'center',
       alignItems: 'center',
@@ -120,6 +145,9 @@ const styles = StyleSheet.create({
       position: 'absolute',
       width,
       top: 30
+    },
+    offlineText: {
+      color: '#fff'
     }
 })
 
