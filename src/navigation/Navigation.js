@@ -2,6 +2,7 @@ import { createStackNavigator, createAppContainer } from 'react-navigation'
 import Thumbnails from '../components/thumbnails/Thumbnails'
 import Local from '../components/Local'
 import Release from '../components/Release'
+import Socket from '../socket/Socket'
 
 const ThumbnailsStackNavigator = createStackNavigator({
     Thumbnails: {
@@ -20,6 +21,12 @@ const ThumbnailsStackNavigator = createStackNavigator({
         screen: Release,
         navigationOptions: {
             title: 'Acquitter'
+        }
+    },
+    Socket: {
+        screen: Socket,
+        navigationOptions: {
+            title: 'Socket'
         }
     }
 })

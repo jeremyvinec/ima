@@ -54,4 +54,4 @@ const styles = StyleSheet.create({
   offlineText: { color: '#fff' }
 });
 
-export default Offline;
+export default Offline

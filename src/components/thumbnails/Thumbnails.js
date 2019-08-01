@@ -89,7 +89,6 @@ class Thumbnails extends React.Component {
                   />
               </View>
             </View>
-            
             {this._displayLoading()}
         </View>
       )
@@ -143,7 +142,6 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       alignItems: 'center',
       flexDirection: 'row',
-      //position: 'absolute',
       width,
       top: 30
     },

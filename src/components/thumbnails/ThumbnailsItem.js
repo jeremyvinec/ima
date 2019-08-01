@@ -22,6 +22,7 @@ import ParticlesIcon from '../../assets/svg/ParticlesIcon'
 import PressureIcon from '../../assets/svg/PressureIcon'
 import SpeedIcon from '../../assets/svg/SpeedIcon'
 import TocIcon from '../../assets/svg/TocIcon'
+import TorIcon from '../../assets/svg/TorIcon'
 
 class ThumbnailsItem extends React.Component {
     constructor(props){
@@ -38,10 +39,12 @@ class ThumbnailsItem extends React.Component {
         opacity: new Animated.Value(1)
       }
       this.states = this.props.thumbnails.states
+      this.type = this.props.thumbnails.type
     }
 
     componentWillMount(){
       this._backgroundColor()
+      this._iconNotif()
       this._color()
       this._arrow()
       this._animate()
@@ -55,60 +58,45 @@ class ThumbnailsItem extends React.Component {
         this._localNotif()
       } else if(nextProps.thumbnails.states != this.props.thumbnails.states){
         console.log('new states')
-        console.log('Prev props | ' + nextProps.thumbnails.states)
-        console.log('New props | ' + this.props.thumbnails.states)
+        //console.log('Prev props | ' + nextProps.thumbnails.states)
+        //console.log('New props | ' + this.props.thumbnails.states)
         this._localNotif()
       }
     }
 
-    _getImageFromType(){
-      const type = this.props.thumbnails.type
-      //console.log(type)
+    _iconNotif(){
+      type = this.type
+
       switch(type){
-        case 'temperature':
-            return( <TemperatureIcon/> )
-            this.iconNotif = 'ic_temperature'
-            break;
-        case 'hygrometry':
-            return( <HygrometryIcon/> )
-            this.iconNotif = 'ic_hygrometry'
-            break;
-        case 'concentration':
-            return( <ConcentrationIcon/> )
-            this.iconNotif = 'ic_concentration'
-            break;
-        case 'conductivity':
-            return ( <ConductivityIcon/> )
-            this.iconNotif = 'ic_conductivity'
-            break;
-        case 'flow':
-            return ( <FlowIcon/> )
-            this.iconNotif = 'ic_flow'
-            break;
-        case 'generic':
-            // generic
-            this.iconNotif = 'ic_generic'
-            break;
-        case 'particles':
-            return( <ParticlesIcon/> )
-            this.iconNotif = 'ic_particles'
-            break;
-        case 'pressure':
-            return( <PressureIcon/> )
-            this.iconNotif = 'ic_pressure'
-            break;
-        case 'speed':
-            return( <SpeedIcon/> )
-            this.iconNotif = 'ic_speed'
-            break;
-        case 'toc':
-            return( <TocIcon/> )
-            this.iconNotif = 'ic_toc'
-            break;
-        case 'tor':
-            //tor
-            this.iconNotif = 'ic_tor'
-            break;
+        case 'temperature': return this.iconNotif = 'ic_temperature'
+        case 'hygrometry': return this.iconNotif = 'ic_hygrometry'
+        case 'concentration': return this.iconNotif = 'ic_concentration'
+        case 'conductivity': return this.iconNotif = 'ic_conductivity'
+        case 'flow': return this.iconNotif = 'ic_flow'
+        case 'generic': return this.iconNotif = 'ic_generic'
+        case 'particles': return this.iconNotif = 'ic_particles'
+        case 'pressure': return this.iconNotif = 'ic_pressure'
+        case 'speed': return this.iconNotif = 'ic_speed'
+        case 'toc': return this.iconNotif = 'ic_toc'
+        case 'tor': return this.iconNotif = 'ic_tor'
+      }
+    }
+
+    _getImageFromType(){
+      type = this.type
+
+      switch(type){
+        case 'temperature': return( <TemperatureIcon/> )
+        case 'hygrometry': return( <HygrometryIcon/> )
+        case 'concentration': return( <ConcentrationIcon/> )
+        case 'conductivity': return ( <ConductivityIcon/> )
+        case 'flow': return ( <FlowIcon/> )
+        case 'generic': // generic
+        case 'particles': return( <ParticlesIcon/> )
+        case 'pressure': return( <PressureIcon/> )
+        case 'speed': return( <SpeedIcon/> )
+        case 'toc': return( <TocIcon/> )
+        case 'tor': return( <TorIcon/> )
       }
     }
 
@@ -250,7 +238,7 @@ class ThumbnailsItem extends React.Component {
               largeIcon: this.iconNotif, // (optional) default: "ic_launcher"
               smallIcon: this.arrow, // (optional) default: "ic_notification" with fallback for "ic_launcher"
               subText: this.localStockage + ' : ' + thumbnails.states, // (optional) default: none
-              color: "#fdb44b", // (optional) default: system default
+              color: "#fc990b", // (optional) default: system default
               group:'prealarm'
             })
             break;
