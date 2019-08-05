@@ -1,7 +1,8 @@
 import React from 'react'
 import { StyleSheet, View, Text, Image, TouchableOpacity, Dimensions, ActivityIndicator } from 'react-native'
 import ThumbnailsList from './ThumbnailsList'
-import Offline from '../Offline'
+import SockJS from 'sockjs-client'
+import Stomp from 'stompjs'
 
 import {NavigationEvents} from 'react-navigation';
 
@@ -19,10 +20,14 @@ class Thumbnails extends React.Component {
       super(props)
       this.state = {
         thumbnails: [],
-        isConnected: true,
+        isConnected: false,
         isLoading: false
       }
       this._recoverThumbnails = this._recoverThumbnails.bind(this);
+    }
+
+    componentDidMount(){
+      this._socket()
     }
 
     componentWillUnmount(){
@@ -31,6 +36,22 @@ class Thumbnails extends React.Component {
 
     _setInterval(){
       this.interval = setInterval(this._recoverThumbnails, 5000)  
+    }
+
+    _socket(){
+      var socket = new SockJS('https://ivtracer-ui/notifications/')
+      var header = {
+        login: 'X-User',
+        passcode: 'a'
+      }
+      stompClient = Stomp.over(socket)
+      stompClient.connect({}, (frame) => {
+        this.setState({ isConnected : true})
+        console.log('Connected: ' + frame)
+        stompClient.subscribe('/topic/alarms/added', function (alarm) {
+          console.log(alarm)
+        })
+      })
     }
 
     _recoverThumbnails() {

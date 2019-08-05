@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, TouchableOpacity } from 'react-native';
+import { Text, View, TouchableOpacity, Button } from 'react-native';
 import SocketIOClient from 'socket.io-client';
 
 export default class Socket extends React.Component {
@@ -27,9 +27,9 @@ export default class Socket extends React.Component {
     render() {
         return(
             <View>
-    					<Text style={styles.text}> Socket.io with react native </Text>
-              <TouchableOpacity onPress={() => this.clicked}> Click </TouchableOpacity>
-					</View>
+    			<Text> Socket.io with react native </Text>
+           		<Button title='Click' onPress={() => this.clicked}></Button>
+			</View>
         );
     }
 }
