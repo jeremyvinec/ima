@@ -227,7 +227,8 @@ class ThumbnailsItem extends React.Component {
               smallIcon: this.arrow, // (optional) default: "ic_notification" with fallback for "ic_launcher"
               subText: this.localStockage + ' : ' + thumbnails.states, // (optional) default: none
               color: "red", // (optional) default: system default
-              group:'alarm'
+              group:'alarm',
+              foreground: true
             })
             break;
         case /prealarm/.test(this.props.thumbnails.states):
@@ -239,7 +240,8 @@ class ThumbnailsItem extends React.Component {
               smallIcon: this.arrow, // (optional) default: "ic_notification" with fallback for "ic_launcher"
               subText: this.localStockage + ' : ' + thumbnails.states, // (optional) default: none
               color: "#fc990b", // (optional) default: system default
-              group:'prealarm'
+              group:'prealarm',
+              foreground: true
             })
             break;
       }

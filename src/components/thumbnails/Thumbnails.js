@@ -4,6 +4,8 @@ import ThumbnailsList from './ThumbnailsList'
 import SockJS from 'sockjs-client'
 import Stomp from 'stompjs'
 
+import PushNotification from 'react-native-push-notification';
+
 import {NavigationEvents} from 'react-navigation';
 
 import { connect } from 'react-redux'
@@ -16,7 +18,7 @@ const { width } = Dimensions.get('window');
 
 class Thumbnails extends React.Component {
 
-    constructor(props){
+    constructor(onRegister, onNotification, props){
       super(props)
       this.state = {
         thumbnails: [],
@@ -24,6 +26,7 @@ class Thumbnails extends React.Component {
         isLoading: false
       }
       this._recoverThumbnails = this._recoverThumbnails.bind(this);
+      this.configure(onRegister, onNotification);
     }
 
     componentDidMount(){
@@ -38,12 +41,13 @@ class Thumbnails extends React.Component {
       this.interval = setInterval(this._recoverThumbnails, 5000)  
     }
 
+      // http://172.20.1.101:8080/notifications/alarms
     _socket(){
-      var socket = new SockJS('https://ivtracer-ui/notifications/')
-      var header = {
-        login: 'X-User',
-        passcode: 'a'
-      }
+      var socket = new SockJS('http://172.20.1.101:8080/notifications/alarms', {
+        protocolVersion: 8,
+        origin: 'https://ivtracer-ui/notifications/alarms',
+        rejectUnauthorized: false
+      })
       stompClient = Stomp.over(socket)
       stompClient.connect({}, (frame) => {
         this.setState({ isConnected : true})

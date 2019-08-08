@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "218075749940",
+    "firebase_url": "https://app-ivtracer.firebaseio.com",
+    "project_id": "app-ivtracer",
+    "storage_bucket": "app-ivtracer.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:218075749940:android:f8703edc1f1d3560",
+        "android_client_info": {
+          "package_name": "com.expo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "218075749940-2f9rju0hivn1tvp5dnoojia82v8j6sur.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVs2r6eclJWQ-K-dY0YmlDlE2mxHxRcUY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "218075749940-2f9rju0hivn1tvp5dnoojia82v8j6sur.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:218075749940:android:6a40093f7c8a5f7a",
+        "android_client_info": {
+          "package_name": "com.ima"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "218075749940-2f9rju0hivn1tvp5dnoojia82v8j6sur.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVs2r6eclJWQ-K-dY0YmlDlE2mxHxRcUY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "218075749940-2f9rju0hivn1tvp5dnoojia82v8j6sur.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
