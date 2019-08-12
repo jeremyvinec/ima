@@ -49,18 +49,18 @@ class ThumbnailsItem extends React.Component {
       this._arrow()
       this._animate()
       this._localStockage()
-      this._onNotification()
+      //this._configure()
     }
 
     componentDidUpdate(nextProps){
       if(nextProps.thumbnails.id != this.props.thumbnails.id){
         console.log('new id')
-        this._onNotification()
+        this._configure()
       } else if(nextProps.thumbnails.states != this.props.thumbnails.states){
         console.log('new states')
         //console.log('Prev props | ' + nextProps.thumbnails.states)
         //console.log('New props | ' + this.props.thumbnails.states)
-        this._onNotification()
+        this._configure()
       }
     }
 
@@ -216,11 +216,11 @@ class ThumbnailsItem extends React.Component {
       PushNotification.configure({
         // (optional) Called when Token is generated (iOS and Android)
         onRegister: function(token){
-          console.log(token)
+          //console.log(token)
         }, //this._onRegister.bind(this),
   
         // (required) Called when a remote or local notification is opened or received
-        _onNotification: this._onNotification(), //this.__onNotification,
+        onNotification: this._onNotification(), //this._onNotification,
   
         // ANDROID ONLY: GCM Sender ID (optional - not required for local notifications, but is need to receive remote push notifications)
         senderID: '218075749940',
@@ -284,7 +284,7 @@ class ThumbnailsItem extends React.Component {
       // Clique sur la notification
       const { navigation, displayRelease } = this.props
       PushNotification.configure({
-        _onNotification: function(notification){
+        onNotification: function(notification){
           //console.log(notification.userInteraction)
           const clicked = notification.userInteraction
           if(clicked){

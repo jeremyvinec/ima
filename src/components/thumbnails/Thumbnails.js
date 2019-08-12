@@ -27,7 +27,7 @@ class Thumbnails extends React.Component {
     }
 
     componentDidMount(){
-      //this._socket()
+      this._socket()
     }
 
     componentWillUnmount(){
@@ -40,16 +40,13 @@ class Thumbnails extends React.Component {
 
       // http://172.20.1.101:8080/notifications/alarms
     _socket(){
-      var socket = new SockJS('https://ivtracer-ui/notifications/alarms', {
-        protocolVersion: 8,
-        origin: 'https://ivtracer-ui/notifications/alarms',
-        rejectUnauthorized: false
-      })
+      var socket = new SockJS('http://172.20.1.101:8081/notifications/alarms')
       stompClient = Stomp.over(socket)
+      console.log(stompClient)
       stompClient.connect({}, (frame) => {
         this.setState({ isConnected : true})
         console.log('Connected: ' + frame)
-        stompClient.subscribe('/topic/alarms/added', function (alarm) {
+        stompClient.subscribe('/topic/alarms', function (alarm) {
           console.log(alarm)
         })
       })
