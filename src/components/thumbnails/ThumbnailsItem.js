@@ -49,18 +49,18 @@ class ThumbnailsItem extends React.Component {
       this._arrow()
       this._animate()
       this._localStockage()
-      //this._localNotif()
+      this._onNotification()
     }
 
     componentDidUpdate(nextProps){
       if(nextProps.thumbnails.id != this.props.thumbnails.id){
         console.log('new id')
-        this._localNotif()
+        this._onNotification()
       } else if(nextProps.thumbnails.states != this.props.thumbnails.states){
         console.log('new states')
         //console.log('Prev props | ' + nextProps.thumbnails.states)
         //console.log('New props | ' + this.props.thumbnails.states)
-        this._localNotif()
+        this._onNotification()
       }
     }
 
@@ -212,7 +212,40 @@ class ThumbnailsItem extends React.Component {
       }
     }
 
-    _localNotif() {
+    _configure() {
+      PushNotification.configure({
+        // (optional) Called when Token is generated (iOS and Android)
+        onRegister: function(token){
+          console.log(token)
+        }, //this._onRegister.bind(this),
+  
+        // (required) Called when a remote or local notification is opened or received
+        _onNotification: this._onNotification(), //this.__onNotification,
+  
+        // ANDROID ONLY: GCM Sender ID (optional - not required for local notifications, but is need to receive remote push notifications)
+        senderID: '218075749940',
+  
+        // IOS ONLY (optional): default: all - Permissions to register.
+        permissions: {
+          alert: true,
+          badge: true,
+          sound: true
+        },
+  
+        // Should the initial notification be popped automatically
+        // default: true
+        popInitialNotification: true,
+  
+        /**
+          * (optional) default: true
+          * - Specified if permissions (ios) and token (android and ios) will requested or not,
+          * - if not, you must call PushNotificationsHandler.requestPermissions() later
+          */
+        requestPermissions: true,
+      });
+    }
+
+    _onNotification() {
       console.log('notification')
       thumbnails = this.props.thumbnails
       this.lastId++;
@@ -251,7 +284,7 @@ class ThumbnailsItem extends React.Component {
       // Clique sur la notification
       const { navigation, displayRelease } = this.props
       PushNotification.configure({
-        onNotification: function(notification){
+        _onNotification: function(notification){
           //console.log(notification.userInteraction)
           const clicked = notification.userInteraction
           if(clicked){

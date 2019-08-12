@@ -6,9 +6,6 @@ import Stomp from 'stompjs'
 
 import {NavigationEvents} from 'react-navigation';
 
-import NotifService from './NotifService'
-import appConfig from '../app/app.json';
-
 import { connect } from 'react-redux'
 import thumbnailsApi from '../../api/thumbnailsApi'
 
@@ -25,20 +22,12 @@ class Thumbnails extends React.Component {
         thumbnails: [],
         isConnected: false,
         isLoading: false,
-        senderId: appConfig.senderID,
-        registerToken: null,
-        gcmRegistered: false
       }
       this._recoverThumbnails = this._recoverThumbnails.bind(this);
-      this.notif = new NotifService(this.onRegister.bind(this), this.onNotif.bind(this))
     }
 
     componentDidMount(){
       //this._socket()
-      this.onRegister()
-      this.onNotif()
-      this.handlePerm()
-      this.notif.configure()
     }
 
     componentWillUnmount(){
@@ -51,7 +40,7 @@ class Thumbnails extends React.Component {
 
       // http://172.20.1.101:8080/notifications/alarms
     _socket(){
-      var socket = new SockJS('http://172.20.1.101:8080/notifications/alarms', {
+      var socket = new SockJS('https://ivtracer-ui/notifications/alarms', {
         protocolVersion: 8,
         origin: 'https://ivtracer-ui/notifications/alarms',
         rejectUnauthorized: false
@@ -125,23 +114,7 @@ class Thumbnails extends React.Component {
             {this._displayLoading()}
         </View>
       )
-    }
-
-    onRegister(token) {
-      console.log("Registered !", JSON.stringify(token))
-      console.log(token);
-      //this.setState({ registerToken: token.token, gcmRegistered: true });
-    }
-  
-    onNotif(notif) {
-      console.log(notif);
-      //console.log(notif.title, notif.message)
-    }
-  
-    handlePerm(perms) {
-      console.log("Permissions", JSON.stringify(perms))
-    }
-    
+    } 
 }
 
 const styles = StyleSheet.create({
