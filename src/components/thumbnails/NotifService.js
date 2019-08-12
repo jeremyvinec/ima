@@ -9,7 +9,7 @@ class NotifService extends React.Component {
     this.lastId = 0;
   }
 
-  configure(onRegister, onNotification, gcm = "") {
+  configure(onRegister, onNotification, gcm = "218075749940") {
     PushNotification.configure({
       // (optional) Called when Token is generated (iOS and Android)
       onRegister: onRegister, //this._onRegister.bind(this),
@@ -41,7 +41,6 @@ class NotifService extends React.Component {
   }
 
   localNotif() {
-    console.log(this.props.thumbnails)
     this.lastId++;
     PushNotification.localNotification({
       /* Android Only Properties */

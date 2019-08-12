@@ -4,9 +4,10 @@ import ThumbnailsList from './ThumbnailsList'
 import SockJS from 'sockjs-client'
 import Stomp from 'stompjs'
 
-import PushNotification from 'react-native-push-notification';
-
 import {NavigationEvents} from 'react-navigation';
+
+import NotifService from './NotifService'
+import appConfig from '../app/app.json';
 
 import { connect } from 'react-redux'
 import thumbnailsApi from '../../api/thumbnailsApi'
@@ -18,19 +19,26 @@ const { width } = Dimensions.get('window');
 
 class Thumbnails extends React.Component {
 
-    constructor(onRegister, onNotification, props){
+    constructor(props){
       super(props)
       this.state = {
         thumbnails: [],
         isConnected: false,
-        isLoading: false
+        isLoading: false,
+        senderId: appConfig.senderID,
+        registerToken: null,
+        gcmRegistered: false
       }
       this._recoverThumbnails = this._recoverThumbnails.bind(this);
-      this.configure(onRegister, onNotification);
+      this.notif = new NotifService(this.onRegister.bind(this), this.onNotif.bind(this))
     }
 
     componentDidMount(){
-      this._socket()
+      //this._socket()
+      this.onRegister()
+      this.onNotif()
+      this.handlePerm()
+      this.notif.configure()
     }
 
     componentWillUnmount(){
@@ -118,6 +126,22 @@ class Thumbnails extends React.Component {
         </View>
       )
     }
+
+    onRegister(token) {
+      console.log("Registered !", JSON.stringify(token))
+      console.log(token);
+      //this.setState({ registerToken: token.token, gcmRegistered: true });
+    }
+  
+    onNotif(notif) {
+      console.log(notif);
+      //console.log(notif.title, notif.message)
+    }
+  
+    handlePerm(perms) {
+      console.log("Permissions", JSON.stringify(perms))
+    }
+    
 }
 
 const styles = StyleSheet.create({
