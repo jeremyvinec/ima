@@ -33,4 +33,10 @@ const getApiAndEmit = async socket => {
     }
   };
 
+/*const getApiAndEmit = function(){
+    return fetch('https://api.darksky.net/forecast/PUT_YOUR_API_KEY_HERE/43.7695,11.2558')
+    .then((res) => socket.emit("FromAPI", res.data.currently.temperature))
+    .catch((error) => console.error(error));
+}*/
+
 server.listen(port, () => console.log(`Listening on port ${port}`));

@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, FlatList } from 'react-native'
+import { StyleSheet, FlatList, ProgressBarAndroid } from 'react-native'
 import ThumbnailsItem from './ThumbnailsItem'
 import { withNavigation } from 'react-navigation'
 

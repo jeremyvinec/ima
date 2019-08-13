@@ -6,8 +6,12 @@ class Local extends React.Component {
 
     constructor(props){
         super(props)
+        const { searchedServeur, searchedPort, searchedUser } = this.props
         this.state = {
             thumbnails: props.thumbnails,
+            serveur: searchedServeur,
+            port: searchedPort,
+            user: searchedUser
         }
     }
 
@@ -30,6 +34,7 @@ class Local extends React.Component {
     }
 
     render(){
+        const { serveur, port, user} = this.state
         return(
             <View style={styles.container}>
                 <Text style={styles.title}> PARAMÉTRAGE DU LOCAL </Text>
@@ -40,7 +45,7 @@ class Local extends React.Component {
                                 style={styles.serveur}
                                 editable={true}
                                 maxLength={40}
-                                placeholder='Nom du serveur'
+                                placeholder={serveur || 'Nom du serveur'}
                                 placeholderTextColor= '#C4C4C4'
                                 onChangeText={(serveur) => this._searchServeur(serveur)}
                             />
@@ -50,7 +55,7 @@ class Local extends React.Component {
                                 style={styles.textInput}
                                 editable={true}
                                 maxLength={40}
-                                placeholder='port'
+                                placeholder={port || 'port'}
                                 placeholderTextColor= '#C4C4C4'
                                 onChangeText={(port) => this._searchPort(port)}
                             />
@@ -58,7 +63,7 @@ class Local extends React.Component {
                                 style={styles.textInput}
                                 editable={true}
                                 maxLength={40}
-                                placeholder='login'
+                                placeholder={user || 'login'}
                                 placeholderTextColor='#C4C4C4'
                                 onChangeText={(user) => this._searchUser(user)}
                             />

@@ -140,14 +140,15 @@ const styles = StyleSheet.create({
       fontWeight: "bold",
       textAlign: 'center'
     },
-    thumbnails_list : {
-      height: '70%'
+    thumbnails_list: {
+      height: '70%',
     },
     local: {
       textAlign: 'right'
     },
     loading_container: {
       position: 'absolute',
+      alignSelf:'flex-end',
       left: 0,
       right: 0,
       top: 100,

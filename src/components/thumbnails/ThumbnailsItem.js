@@ -49,7 +49,7 @@ class ThumbnailsItem extends React.Component {
       this._arrow()
       this._animate()
       this._localStockage()
-      //this._configure()
+      this._configure()
     }
 
     componentDidUpdate(nextProps){
@@ -58,8 +58,8 @@ class ThumbnailsItem extends React.Component {
         this._configure()
       } else if(nextProps.thumbnails.states != this.props.thumbnails.states){
         console.log('new states')
-        //console.log('Prev props | ' + nextProps.thumbnails.states)
-        //console.log('New props | ' + this.props.thumbnails.states)
+        console.log('Prev props | ' + nextProps.thumbnails.states)
+        console.log('New props | ' + this.props.thumbnails.states)
         this._configure()
       }
     }
@@ -220,7 +220,9 @@ class ThumbnailsItem extends React.Component {
         }, //this._onRegister.bind(this),
   
         // (required) Called when a remote or local notification is opened or received
-        onNotification: this._onNotification(), //this._onNotification,
+        onNotification: function(notification){
+          console.log(notification)
+        }, //this._onNotification,
   
         // ANDROID ONLY: GCM Sender ID (optional - not required for local notifications, but is need to receive remote push notifications)
         senderID: '218075749940',
