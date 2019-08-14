@@ -107,6 +107,9 @@ class Thumbnails extends React.Component {
                     thumbnails={thumbnails}
                   />
               </View>
+              <View>
+                <Text style={styles.text}>Glisser vers le bas</Text>
+              </View>
             </View>
             {this._displayLoading()}
         </View>
@@ -141,7 +144,7 @@ const styles = StyleSheet.create({
       textAlign: 'center'
     },
     thumbnails_list: {
-      height: '70%',
+      height: '69%',
     },
     local: {
       textAlign: 'right'

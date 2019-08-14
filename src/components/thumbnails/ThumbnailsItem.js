@@ -34,23 +34,21 @@ class ThumbnailsItem extends React.Component {
       this.arrow = 'ic_stat_icon_ivtracer',
       this.iconNotif = '',
       this.alarmeType = ''
-      this.localStockage = null
+      this.localStockage = null,
       this.state = {
-        opacity: new Animated.Value(1)
+        opacity: new Animated.Value(1),
       }
-      this.states = this.props.thumbnails.states
-      this.type = this.props.thumbnails.type
     }
 
-    componentWillMount(){
+    componentDidMount(){
       this._backgroundColor()
       this._iconNotif()
       this._color()
       this._arrow()
       this._animate()
       this._localStockage()
-      this._configure()
     }
+    
 
     componentDidUpdate(nextProps){
       if(nextProps.thumbnails.id != this.props.thumbnails.id){
@@ -58,14 +56,20 @@ class ThumbnailsItem extends React.Component {
         this._configure()
       } else if(nextProps.thumbnails.states != this.props.thumbnails.states){
         console.log('new states')
-        console.log('Prev props | ' + nextProps.thumbnails.states)
-        console.log('New props | ' + this.props.thumbnails.states)
-        this._configure()
+        //console.log('Prev props | ' + nextProps.thumbnails.states)
+        //console.log('New props | ' + this.props.thumbnails.states)
+        this._configure() // Notification
+        this._backgroundColor()
+        this._color()
+        this._arrow()
+        this._animate()
+      } else if(nextProps.thumbnails.type != this.props.thumbnails.type){
+        console.log('new type')
       }
     }
 
     _iconNotif(){
-      type = this.type
+      type = this.props.thumbnails.type
 
       switch(type){
         case 'temperature': return this.iconNotif = 'ic_temperature'
@@ -83,7 +87,7 @@ class ThumbnailsItem extends React.Component {
     }
 
     _getImageFromType(){
-      type = this.type
+      type = this.props.thumbnails.type
 
       switch(type){
         case 'temperature': return( <TemperatureIcon/> )
@@ -101,8 +105,7 @@ class ThumbnailsItem extends React.Component {
     }
 
     _backgroundColor(){
-      states = this.states
-
+      states = this.props.thumbnails.states
       switch(true){
         case /hs/.test(states):
             this.backgroundColor = '#fff' // $white
@@ -123,8 +126,7 @@ class ThumbnailsItem extends React.Component {
     }
 
     _color(){
-      states = this.states
-
+      states = this.props.thumbnails.states
       switch(true){
         case /qaa/.test(states):
             this.color = '#005dbf' //$lime-blue
@@ -146,7 +148,7 @@ class ThumbnailsItem extends React.Component {
     }
 
     _arrow(){
-      states = this.states       
+      states = this.props.thumbnails.states     
       if(states.includes('high')){
         this.arrow = 'ic_arrowup'
         this.alarmeType = 'Alarme haute : '
@@ -168,31 +170,29 @@ class ThumbnailsItem extends React.Component {
         return(
           <CriticalBlackIcon/>
         )
-      } else {
-
-      }
+      } return null
     }
 
     _offline(){
-      states = this.states
+      states = this.props.thumbnails.states
       if(states.includes('offline')){
         return(
           <OfflineIcon/>
         )
-      }
+      } return null
     }
 
     _roomoutofprod(){
-      states = this.states
+      states = this.props.thumbnails.states
       if(states.includes('roomoutofprod')){
         return(
           <RoomOutOfProdIcon/>
         )
-      }
+      } return null
     }
 
     _animate(){
-      states = this.states
+      states = this.props.thumbnails.states
       if(states.includes('notack')){
         Animated.loop(
           Animated.sequence([
@@ -220,9 +220,7 @@ class ThumbnailsItem extends React.Component {
         }, //this._onRegister.bind(this),
   
         // (required) Called when a remote or local notification is opened or received
-        onNotification: function(notification){
-          console.log(notification)
-        }, //this._onNotification,
+        onNotification: this._onNotification(), //this._onNotification,
   
         // ANDROID ONLY: GCM Sender ID (optional - not required for local notifications, but is need to receive remote push notifications)
         senderID: '218075749940',
@@ -250,10 +248,11 @@ class ThumbnailsItem extends React.Component {
     _onNotification() {
       console.log('notification')
       thumbnails = this.props.thumbnails
+      states = this.props.thumbnails.states
       this.lastId++;
 
       switch(true){
-        case /^alarm/.test(this.props.thumbnails.states):
+        case /^alarm/.test(states):
             PushNotification.localNotification({
               /* iOS and Android properties */
               title: this.alarmeType + thumbnails.name, // (optional)
@@ -263,10 +262,10 @@ class ThumbnailsItem extends React.Component {
               subText: this.localStockage + ' : ' + thumbnails.states, // (optional) default: none
               color: "red", // (optional) default: system default
               group:'alarm',
-              foreground: true
+              importance: 'high'
             })
             break;
-        case /prealarm/.test(this.props.thumbnails.states):
+        case /prealarm/.test(states):
             PushNotification.localNotification({
               /* iOS and Android properties */
               title: this.alarmeType + thumbnails.name, // (optional)
@@ -276,7 +275,7 @@ class ThumbnailsItem extends React.Component {
               subText: this.localStockage + ' : ' + thumbnails.states, // (optional) default: none
               color: "#fc990b", // (optional) default: system default
               group:'prealarm',
-              foreground: true
+              importance: 'high'
             })
             break;
       }
