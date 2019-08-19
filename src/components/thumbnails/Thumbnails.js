@@ -6,6 +6,8 @@ import Stomp from 'stompjs'
 
 import {NavigationEvents} from 'react-navigation';
 
+import PushNotification from 'react-native-push-notification';
+
 import { connect } from 'react-redux'
 import thumbnailsApi from '../../api/thumbnailsApi'
 
@@ -22,6 +24,9 @@ class Thumbnails extends React.Component {
         thumbnails: [],
         isConnected: false,
         isLoading: false,
+        registerToken: '',
+        gcmRegistered: false,
+        Notification: []
       }
       this._recoverThumbnails = this._recoverThumbnails.bind(this);
     }
@@ -42,14 +47,64 @@ class Thumbnails extends React.Component {
     _socket(){
       var socket = new SockJS('http://172.20.1.101:8081/notifications/alarms')
       stompClient = Stomp.over(socket)
-      console.log(stompClient)
       stompClient.connect({}, (frame) => {
         this.setState({ isConnected : true})
         console.log('Connected: ' + frame)
-        stompClient.subscribe('/topic/alarms', function (alarm) {
-          console.log(alarm)
+        stompClient.subscribe('/topic/alarms', (notif) => {
+          //let alarms = JSON.stringify(notif.body)
+          this.setState({
+            Notification: notif.body
+          })
+          this._configure()
+          //console.log(notif.title, notif.message)
         })
       })
+    }
+
+    _configure() {
+      PushNotification.configure({
+        // (optional) Called when Token is generated (iOS and Android)
+        onRegister: (token) => {
+          console.log(token)
+          this.setState({ registerToken: token.token, gcmRegistered: true });
+        }, //this._onRegister.bind(this),
+  
+        // (required) Called when a remote or local notification is opened or received
+        onNotification: this.NewNotification() /*function (notification){
+          
+          //traiter la notification
+          
+          // requis sur iOS uniquement
+          notification.finish (PushNotificationIOS.FetchResult.NoData);
+        }*/, //this._onNotification,
+  
+        // ANDROID ONLY: GCM Sender ID (optional - not required for local notifications, but is need to receive remote push notifications)
+        senderID: '218075749940',
+  
+        // IOS ONLY (optional): default: all - Permissions to register.
+        permissions: {
+          alert: true,
+          badge: true,
+          sound: true
+        },
+  
+        // Should the initial notification be popped automatically
+        // default: true
+        popInitialNotification: true,
+  
+        /**
+          * (optional) default: true
+          * - Specified if permissions (ios) and token (android and ios) will requested or not,
+          * - if not, you must call PushNotificationsHandler.requestPermissions() later
+          */
+        requestPermissions: true,
+      });
+    }
+
+    NewNotification(){
+      PushNotification.localNotification({
+        message: "My Notification Message", // (required)
+    });
     }
 
     _recoverThumbnails() {
@@ -87,6 +142,7 @@ class Thumbnails extends React.Component {
 
     render(){
       const { thumbnails } = this.state
+      console.log(this.state.Notification)
       return (
         <View style={styles.container}>
             {/* Gérer le paramétrage du local */}

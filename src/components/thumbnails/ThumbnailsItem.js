@@ -53,18 +53,18 @@ class ThumbnailsItem extends React.Component {
     componentDidUpdate(nextProps){
       if(nextProps.thumbnails.id != this.props.thumbnails.id){
         console.log('new id')
-        this._configure()
+        //this._configure()
       } else if(nextProps.thumbnails.states != this.props.thumbnails.states){
-        console.log('new states')
+        console.log('new states', this.props.thumbnails.states)
         //console.log('Prev props | ' + nextProps.thumbnails.states)
         //console.log('New props | ' + this.props.thumbnails.states)
-        this._configure() // Notification
+        //this._configure() // Notification
         this._backgroundColor()
         this._color()
         this._arrow()
         this._animate()
       } else if(nextProps.thumbnails.type != this.props.thumbnails.type){
-        console.log('new type')
+        console.log('new type' )
       }
     }
 
