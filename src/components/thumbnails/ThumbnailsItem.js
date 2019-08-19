@@ -48,7 +48,6 @@ class ThumbnailsItem extends React.Component {
       this._animate()
       this._localStockage()
     }
-    
 
     componentDidUpdate(nextProps){
       if(nextProps.thumbnails.id != this.props.thumbnails.id){

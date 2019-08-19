@@ -26,7 +26,7 @@ class Thumbnails extends React.Component {
         isLoading: false,
         registerToken: '',
         gcmRegistered: false,
-        Notification: []
+        notification: []
       }
       this._recoverThumbnails = this._recoverThumbnails.bind(this);
     }
@@ -48,12 +48,12 @@ class Thumbnails extends React.Component {
       var socket = new SockJS('http://172.20.1.101:8081/notifications/alarms')
       stompClient = Stomp.over(socket)
       stompClient.connect({}, (frame) => {
-        this.setState({ isConnected : true})
+        this.setState({ isConnected : true, isLoading: true })
         console.log('Connected: ' + frame)
         stompClient.subscribe('/topic/alarms', (notif) => {
           //let alarms = JSON.stringify(notif.body)
           this.setState({
-            Notification: notif.body
+            notification: JSON.parse(notif.body)
           })
           this._configure()
           //console.log(notif.title, notif.message)
@@ -65,12 +65,12 @@ class Thumbnails extends React.Component {
       PushNotification.configure({
         // (optional) Called when Token is generated (iOS and Android)
         onRegister: (token) => {
-          console.log(token)
+          //console.log(token)
           this.setState({ registerToken: token.token, gcmRegistered: true });
         }, //this._onRegister.bind(this),
   
         // (required) Called when a remote or local notification is opened or received
-        onNotification: this.NewNotification() /*function (notification){
+        onNotification: this._test() /*function (notification){
           
           //traiter la notification
           
@@ -101,15 +101,49 @@ class Thumbnails extends React.Component {
       });
     }
 
-    NewNotification(){
+    _test(){
+      const { notification } = this.state
       PushNotification.localNotification({
-        message: "My Notification Message", // (required)
-    });
+        message: notification.text
+      })
+    }
+
+    _onNotification(){
+      console.log('notification')
+      const states = this.state.thumbnails.states
+      const { notification } = this.state
+      switch(true){
+        case /^alarm/.test(states):
+            PushNotification.localNotification({
+              /* iOS and Android properties */
+              title: notification.type, // this.alarmeType + thumbnails.name
+              message: notification.text, // (required)
+              largeIcon: notification, // this.iconNotif
+              smallIcon: notification, // this.arrow
+              subText: notification, // this.localStockage + ' : ' + thumbnails.states
+              color: "red",
+              group:'alarm',
+              importance: 'high'
+            })
+            break;
+        case /prealarm/.test(states):
+            PushNotification.localNotification({
+              /* iOS and Android properties */
+              title: notification,
+              message: notification.text, // (required)
+              largeIcon: notification, // (optional) default: "ic_launcher"
+              smallIcon: notification, // (optional) default: "ic_notification" with fallback for "ic_launcher"
+              subText: notification, // (optional) default: none
+              color: "#fc990b", // (optional) default: system default
+              group:'prealarm',
+              importance: 'high'
+            })
+            break;
+      }
     }
 
     _recoverThumbnails() {
       console.log('update')
-      this.setState({ isLoading: true })
       const { searchedServeur, searchedPort, searchedUser } = this.props
       thumbnailsApi.getAllThumbnails(searchedServeur, searchedPort, searchedUser).then(data => {
         this.setState({
@@ -142,7 +176,6 @@ class Thumbnails extends React.Component {
 
     render(){
       const { thumbnails } = this.state
-      console.log(this.state.Notification)
       return (
         <View style={styles.container}>
             {/* Gérer le paramétrage du local */}
