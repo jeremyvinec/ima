@@ -9,7 +9,7 @@ export function loadThumbnails() {
     return dispatch => {
         return thumbnailsApi.getAllThumbnails().then(thumbnails => {
             dispatch(loadThumbnailsSuccess(thumbnails.thumbnails))
-        }).catch(error => {
+        }).catch((error) => {
             throw(error)
         })
     }

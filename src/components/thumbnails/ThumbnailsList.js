@@ -1,13 +1,10 @@
 import React from 'react'
-import { StyleSheet, FlatList } from 'react-native'
+import { StyleSheet, FlatList, Dimensions, View } from 'react-native'
 import ThumbnailsItem from './ThumbnailsItem'
 import { withNavigation } from 'react-navigation'
+import SwipeView from 'react-native-swipeview';
 
 class ThumbnailsList extends React.Component {
-
-  constructor(props) {
-    super(props)
-  }
 
   _displayRelease = (idThumbnails) => {
     this.props.navigation.navigate("Release", { idThumbnails: idThumbnails })
@@ -35,20 +32,34 @@ class ThumbnailsList extends React.Component {
     })
   }
 
+  deleteItemById = (id) => {
+    console.log(this.state.thumbnails)
+    console.log('delete thumbnails')
+    const filteredData = this.state.data.filter(item => item.id !== id);
+    //this.props.thumbnails = filteredData
+    this.setState({ data: filteredData });
+  }
+
   render() {
     const { thumbnails } = this.props
+    this.rightOpenValue = -Dimensions.get('window').width;
     return (
         <FlatList
           contentInset={{bottom: 90}}
           style={styles.list}
-          data={thumbnails.sort((a,b) => a.states.localeCompare(b.states))}
+          data={thumbnails} // thumbnails.sort((a,b) => a.states.localeCompare(b.states))
           extraData={this.state}
           keyExtractor={(item) => item.id}
           initialNumToRender={100}
-          renderItem={({item}) => ( 
-            <ThumbnailsItem 
-              thumbnails={item}
-              displayRelease={this._displayRelease}
+          renderItem={({item}) => (
+            <SwipeView onSwipedLeft={() => this.deleteItemById(item.id)}
+              renderVisibleContent={() => 
+              <ThumbnailsItem 
+                thumbnails={item}
+                displayRelease={this._displayRelease}
+              />}
+              rightOpenValue = {this.rightOpenValue}
+              //disableSwipeToRight = {true}
             />
           )}
         />
@@ -58,7 +69,7 @@ class ThumbnailsList extends React.Component {
 
 const styles = StyleSheet.create({
   list: {
-    flex: 1,
+    flex: 1
   },
 })
 

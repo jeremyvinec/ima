@@ -23,6 +23,7 @@ import PressureIcon from '../../assets/svg/PressureIcon'
 import SpeedIcon from '../../assets/svg/SpeedIcon'
 import TocIcon from '../../assets/svg/TocIcon'
 import TorIcon from '../../assets/svg/TorIcon'
+import DeleteIcon from '../../assets/svg/DeleteIcon'
 
 class ThumbnailsItem extends React.Component {
     constructor(props){
@@ -37,6 +38,8 @@ class ThumbnailsItem extends React.Component {
       this.localStockage = null,
       this.state = {
         opacity: new Animated.Value(1),
+        sectionID: null,
+        rowID: null
       }
     }
 
@@ -308,7 +311,7 @@ class ThumbnailsItem extends React.Component {
       return (
         <TouchableOpacity onPress={() => navigation.navigate('Release') + displayRelease(thumbnails.name)} >
           <Animated.View style={[{backgroundColor: this.backgroundColor, opacity: this.state.opacity},styles.button, styles.main_container]}>
-          {this._getImageFromType()}
+            {this._getImageFromType()}
             <View style={styles.content_container}>
               <View style={styles.header_container}>
                 <Text style={[{color: this.color, fontStyle: this.fontStyle, fontWeight: this.fontWeight},styles.title_text]}>{thumbnails.name}</Text>
@@ -361,6 +364,11 @@ class ThumbnailsItem extends React.Component {
     textButton:{
       fontSize: 17,
       fontWeight: '700',
+    },
+    swipe: {
+      flexDirection: 'row', 
+      alignItems: 'center',
+      top: '50%'
     }
   });
 

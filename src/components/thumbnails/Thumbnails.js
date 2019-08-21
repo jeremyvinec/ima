@@ -1,8 +1,9 @@
 import React from 'react'
-import { StyleSheet, View, Text, Image, TouchableOpacity, Dimensions, ActivityIndicator } from 'react-native'
+import { StyleSheet, View, Text, Image, TouchableOpacity, Dimensions, ActivityIndicator, TextInput } from 'react-native'
 import ThumbnailsList from './ThumbnailsList'
 import SockJS from 'sockjs-client'
 import Stomp from 'stompjs'
+import Search from '../Search'
 
 import {NavigationEvents} from 'react-navigation';
 
@@ -13,6 +14,7 @@ import thumbnailsApi from '../../api/thumbnailsApi'
 
 // SVG
 import SettingsIcon from '../../assets/svg/SettingsIcon'
+import SearchIcon from '../../assets/svg/SearchIcon'
 
 const { width } = Dimensions.get('window');
 
@@ -24,6 +26,7 @@ class Thumbnails extends React.Component {
         thumbnails: [],
         isConnected: false,
         isLoading: false,
+        searchText: '',
         registerToken: '',
         gcmRegistered: false,
         notification: []
@@ -33,6 +36,7 @@ class Thumbnails extends React.Component {
 
     componentDidMount(){
       this._socket()
+      console.log(this.props.thumbnails)
     }
 
     componentWillUnmount(){
@@ -45,7 +49,11 @@ class Thumbnails extends React.Component {
 
       // http://172.20.1.101:8080/notifications/alarms
     _socket(){
-      var socket = new SockJS('http://172.20.1.101:8081/notifications/alarms')
+      var socket = new SockJS('https://ivtracer-ui/notifications/alarms', {
+        agentOptions: {
+          rejectUnauthorized: false
+        }
+      })
       stompClient = Stomp.over(socket)
       stompClient.connect({}, (frame) => {
         this.setState({ isConnected : true, isLoading: true })
@@ -57,7 +65,7 @@ class Thumbnails extends React.Component {
           })
           this._configure()
           //console.log(notif.title, notif.message)
-        })
+        }, (Reconnect_failed ) => console.log(Reconnect_failed ))
       })
     }
 
@@ -181,7 +189,10 @@ class Thumbnails extends React.Component {
             {/* Gérer le paramétrage du local */}
             {this._offline()}
             <NavigationEvents onDidFocus={() => this._setInterval()} />
-            <TouchableOpacity style={styles.header}  onPress={() => this.componentWillUnmount() + this.props.navigation.navigate('Local')}>
+            <TouchableOpacity style={styles.search} onPress={() => this.props.navigation.navigate('Search')}>
+              <SearchIcon/>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.settings}  onPress={() => this.componentWillUnmount() + this.props.navigation.navigate('Local')}>
               <SettingsIcon/>
             </TouchableOpacity>
             <View style={styles.main}>
@@ -211,13 +222,18 @@ const styles = StyleSheet.create({
       flex: 1,
       backgroundColor: '#4C626F',
     },
-    header: {
+    settings: {
       position:'absolute',
       right:5,
       top:5
     },
+    search: {
+      position:'absolute',
+      right:30,
+      top:5
+    },
     main: {
-      alignItems:'center'
+      alignItems:'center',
     },
     spacer: {
       height: 10,
@@ -264,6 +280,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
+    thumbnails: state.thumbnails,
     searchedServeur: state.searchedServeur,
     searchedPort: state.searchedPort,
     searchedUser:state.searchedUser
