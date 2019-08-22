@@ -3,7 +3,6 @@ import { StyleSheet, View, Text, Image, TouchableOpacity, Dimensions, ActivityIn
 import ThumbnailsList from './ThumbnailsList'
 import SockJS from 'sockjs-client'
 import Stomp from 'stompjs'
-import Search from '../Search'
 
 import {NavigationEvents} from 'react-navigation';
 
@@ -49,7 +48,7 @@ class Thumbnails extends React.Component {
 
       // http://172.20.1.101:8080/notifications/alarms
     _socket(){
-      var socket = new SockJS('https://ivtracer-ui/notifications/alarms', {
+      var socket = new SockJS('http://172.20.1.101:8080/notifications/alarms', {
         agentOptions: {
           rejectUnauthorized: false
         }
@@ -249,7 +248,7 @@ const styles = StyleSheet.create({
       textAlign: 'center'
     },
     thumbnails_list: {
-      height: '69%',
+      height: '73%',
     },
     local: {
       textAlign: 'right'

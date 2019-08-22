@@ -1,6 +1,7 @@
 import React from 'react'
-import { StyleSheet, View, Text, TouchableOpacity, Image, Animated,  } from 'react-native'
+import { StyleSheet, View, Text, TouchableOpacity, Animated,  } from 'react-native'
 import PushNotification from 'react-native-push-notification'
+import Sparkline from 'react-native-sparkline'
 
 // Accéder à Navigation Prop
 import { withNavigation } from 'react-navigation'
@@ -23,7 +24,6 @@ import PressureIcon from '../../assets/svg/PressureIcon'
 import SpeedIcon from '../../assets/svg/SpeedIcon'
 import TocIcon from '../../assets/svg/TocIcon'
 import TorIcon from '../../assets/svg/TorIcon'
-import DeleteIcon from '../../assets/svg/DeleteIcon'
 
 class ThumbnailsItem extends React.Component {
     constructor(props){
@@ -308,6 +308,9 @@ class ThumbnailsItem extends React.Component {
 
     render() {
       const { thumbnails, displayRelease, navigation } = this.props
+      const data = Array.from({ length: 20 }).map(
+        (unused, i) => i + (i + 1) * Math.random()
+      )
       return (
         <TouchableOpacity onPress={() => navigation.navigate('Release') + displayRelease(thumbnails.name)} >
           <Animated.View style={[{backgroundColor: this.backgroundColor, opacity: this.state.opacity},styles.button, styles.main_container]}>
@@ -319,9 +322,17 @@ class ThumbnailsItem extends React.Component {
               </View>
               <View style={styles.value_container}>
                 <Text style={styles.textButton}>{thumbnails.value}{' '}{thumbnails.unit}</Text>
-                {this._arrow()}
-                {this._offline()}
-                {this._roomoutofprod()}
+                <View style={{marginTop: 20}}>
+                  {this._arrow()}
+                  {this._offline()}
+                  {this._roomoutofprod()}
+                </View>
+              </View>
+              <View style={{flex:1}}>
+                <Sparkline width='150' height='50' data={data} style={styles.sparkline}>
+                  <Sparkline.Line/>
+                  <Sparkline.Spots color='#fd5d54'/>
+                </Sparkline>
               </View>
             </View>
           </Animated.View>
@@ -332,7 +343,6 @@ class ThumbnailsItem extends React.Component {
   
   const styles = StyleSheet.create({
     main_container: {
-      height: 90,
       flexDirection: 'row',
     },
     content_container: {
@@ -351,8 +361,8 @@ class ThumbnailsItem extends React.Component {
     button: {
       margin: 5,
       padding: 5,
-      width: 200,
-      height: 90,
+      width: 250,
+      height: 100,
       borderRadius: 5,
       alignItems: 'center',
       justifyContent: 'center',
@@ -369,6 +379,10 @@ class ThumbnailsItem extends React.Component {
       flexDirection: 'row', 
       alignItems: 'center',
       top: '50%'
+    },
+    sparkline: {
+      position: 'absolute', 
+      bottom: 0
     }
   });
 

@@ -10367,6 +10367,11 @@ react-native-safe-area-view@^0.14.1:
   dependencies:
     debounce "^1.2.0"
 
+react-native-sparkline@^1.0.5-beta:
+  version "1.0.5-beta"
+  resolved "https://registry.yarnpkg.com/react-native-sparkline/-/react-native-sparkline-1.0.5-beta.tgz#30502aa959f86616b3d458214f85baff5beeec4c"
+  integrity sha1-MFAqqVn4Zhaz1FghT4W6/1vu7Ew=
+
 react-native-svg@^9.5.1:
   version "9.5.3"
   resolved "https://registry.yarnpkg.com/react-native-svg/-/react-native-svg-9.5.3.tgz#2389f3ffd700c6441166496a1aeade31ead89c59"
