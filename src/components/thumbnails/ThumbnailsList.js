@@ -4,7 +4,17 @@ import ThumbnailsItem from './ThumbnailsItem'
 import { withNavigation } from 'react-navigation'
 import SwipeView from 'react-native-swipeview';
 
+import { connect } from 'react-redux'
+import thumbnailsApi from '../../api/thumbnailsApi'
+
 class ThumbnailsList extends React.Component {
+
+  constructor(props){
+    super(props)
+    this.state = {
+      isFetching: false
+    }
+  }
 
   _displayRelease = (idThumbnails) => {
     this.props.navigation.navigate("Release", { idThumbnails: idThumbnails })
@@ -32,6 +42,20 @@ class ThumbnailsList extends React.Component {
     })
   }
 
+  _recoverThumbnails() {
+    console.log('update')
+    const { searchedServeur, searchedPort, searchedUser } = this.props
+    this.setState({ isFetching: true })
+    thumbnailsApi.getAllThumbnails(searchedServeur, searchedPort, searchedUser).then(data => {
+      this.setState({
+        thumbnails: data.thumbnails,
+        isLoading: false,
+        isConnected: false,
+        isFetching: false
+      })
+    })
+  }
+
   deleteItemById = (id) => {
     console.log(this.state.thumbnails)
     console.log('delete thumbnails')
@@ -51,6 +75,8 @@ class ThumbnailsList extends React.Component {
           extraData={this.state}
           keyExtractor={(item) => item.id}
           initialNumToRender={100}
+          onRefresh={() => this._recoverThumbnails()}
+          refreshing={this.state.isFetching}
           renderItem={({item}) => (
             <SwipeView onSwipedLeft={() => this.deleteItemById(item.id)}
               renderVisibleContent={() => 
@@ -73,4 +99,13 @@ const styles = StyleSheet.create({
   },
 })
 
-export default withNavigation(ThumbnailsList)
+const mapStateToProps = (state) => {
+  return {
+    thumbnails: state.thumbnails,
+    searchedServeur: state.searchedServeur,
+    searchedPort: state.searchedPort,
+    searchedUser:state.searchedUser
+  }
+}
+
+export default withNavigation(connect(mapStateToProps)(ThumbnailsList))

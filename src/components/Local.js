@@ -45,6 +45,7 @@ class Local extends React.Component {
                                 style={styles.serveur}
                                 editable={true}
                                 maxLength={40}
+                                autoCapitalize = 'none'
                                 placeholder={serveur || 'Nom du serveur'}
                                 placeholderTextColor= '#C4C4C4'
                                 onChangeText={(serveur) => this._searchServeur(serveur)}
@@ -55,6 +56,7 @@ class Local extends React.Component {
                                 style={styles.textInput}
                                 editable={true}
                                 maxLength={40}
+                                autoCapitalize = 'none'
                                 placeholder={port || 'port'}
                                 placeholderTextColor= '#C4C4C4'
                                 onChangeText={(port) => this._searchPort(port)}
@@ -63,6 +65,7 @@ class Local extends React.Component {
                                 style={styles.textInput}
                                 editable={true}
                                 maxLength={40}
+                                autoCapitalize = 'none'
                                 placeholder={user || 'login'}
                                 placeholderTextColor='#C4C4C4'
                                 onChangeText={(user) => this._searchUser(user)}
