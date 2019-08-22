@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
-    thumbnails: state.thumbnails,
+    //thumbnails: state.thumbnails,
     searchedServeur: state.searchedServeur,
     searchedPort: state.searchedPort,
     searchedUser:state.searchedUser
