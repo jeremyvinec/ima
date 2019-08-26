@@ -2,6 +2,7 @@ import thumbnails from './thumbnailsReducer'
 import searchedServeur from './serveurReducer'
 import searchedPort from './portReducer'
 import searchedUser from './userRecucer'
+import notification from './notificationReducer'
 import { persistCombineReducers } from 'redux-persist'
 //import storage from 'redux-persist/lib/storage'
 import AsyncStorage from '@react-native-community/async-storage';
@@ -13,7 +14,7 @@ const rootPersistConfig = {
   }
 
 const rootReducer = persistCombineReducers(rootPersistConfig, {
-    thumbnails, searchedServeur, searchedPort, searchedUser
+    thumbnails, notification, searchedServeur, searchedPort, searchedUser
 })
 
 export default rootReducer

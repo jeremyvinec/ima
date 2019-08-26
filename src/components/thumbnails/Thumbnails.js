@@ -35,7 +35,6 @@ class Thumbnails extends React.Component {
 
     componentDidMount(){
       this._socket()
-      console.log(this.props.thumbnails)
     }
 
     componentWillUnmount(){
@@ -58,67 +57,23 @@ class Thumbnails extends React.Component {
         this.setState({ isConnected : true, isLoading: true })
         console.log('Connected: ' + frame)
         stompClient.subscribe('/topic/alarms', (notif) => {
-          //let alarms = JSON.stringify(notif.body)
-          this.setState({
-            notification: JSON.parse(notif.body)
-          })
-          this._configure()
+          const notification = JSON.parse(notif.body)
+          const notificationAction = { type: 'NOTIFICATION', value: notification}
+          this.props.dispatch(notificationAction)
+          console.log(this.props.dispatch(notificationAction))
           //console.log(notif.title, notif.message)
         }, (Reconnect_failed ) => console.log(Reconnect_failed ))
       })
     }
 
-    _configure() {
-      PushNotification.configure({
-        // (optional) Called when Token is generated (iOS and Android)
-        onRegister: (token) => {
-          //console.log(token)
-          this.setState({ registerToken: token.token, gcmRegistered: true });
-        }, //this._onRegister.bind(this),
-  
-        // (required) Called when a remote or local notification is opened or received
-        onNotification: this._test() /*function (notification){
-          
-          //traiter la notification
-          
-          // requis sur iOS uniquement
-          notification.finish (PushNotificationIOS.FetchResult.NoData);
-        }*/, //this._onNotification,
-  
-        // ANDROID ONLY: GCM Sender ID (optional - not required for local notifications, but is need to receive remote push notifications)
-        senderID: '218075749940',
-  
-        // IOS ONLY (optional): default: all - Permissions to register.
-        permissions: {
-          alert: true,
-          badge: true,
-          sound: true
-        },
-  
-        // Should the initial notification be popped automatically
-        // default: true
-        popInitialNotification: true,
-  
-        /**
-          * (optional) default: true
-          * - Specified if permissions (ios) and token (android and ios) will requested or not,
-          * - if not, you must call PushNotificationsHandler.requestPermissions() later
-          */
-        requestPermissions: true,
-      });
-    }
 
-    _test(){
-      const { notification } = this.state
-      PushNotification.localNotification({
-        message: notification.text
-      })
-    }
 
     _onNotification(){
       console.log('notification')
-      const states = this.state.thumbnails.states
+      //const states = this.state.thumbnails.states
       const { notification } = this.state
+      const states = notification.type
+      console.log(states)
       switch(true){
         case /^alarm/.test(states):
             PushNotification.localNotification({
@@ -280,6 +235,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => {
   return {
     thumbnails: state.thumbnails,
+    notification: state.notification,
     searchedServeur: state.searchedServeur,
     searchedPort: state.searchedPort,
     searchedUser:state.searchedUser
