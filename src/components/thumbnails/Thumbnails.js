@@ -1,12 +1,8 @@
 import React from 'react'
 import { StyleSheet, View, Text, Image, TouchableOpacity, Dimensions, ActivityIndicator, TextInput } from 'react-native'
 import ThumbnailsList from './ThumbnailsList'
-import SockJS from 'sockjs-client'
-import Stomp from 'stompjs'
 
 import {NavigationEvents} from 'react-navigation';
-
-import PushNotification from 'react-native-push-notification';
 
 import { connect } from 'react-redux'
 import thumbnailsApi from '../../api/thumbnailsApi'
@@ -26,15 +22,8 @@ class Thumbnails extends React.Component {
         isConnected: false,
         isLoading: false,
         searchText: '',
-        registerToken: '',
-        gcmRegistered: false,
-        notification: []
       }
       this._recoverThumbnails = this._recoverThumbnails.bind(this);
-    }
-
-    componentDidMount(){
-      this._socket()
     }
 
     componentWillUnmount(){
@@ -43,65 +32,6 @@ class Thumbnails extends React.Component {
 
     _setInterval(){
       this.interval = setInterval(this._recoverThumbnails, 5000)  
-    }
-
-      // http://172.20.1.101:8080/notifications/alarms
-    _socket(){
-      var socket = new SockJS('http://172.20.1.101:8080/notifications/alarms', {
-        agentOptions: {
-          rejectUnauthorized: false
-        }
-      })
-      stompClient = Stomp.over(socket)
-      stompClient.connect({}, (frame) => {
-        this.setState({ isConnected : true, isLoading: true })
-        console.log('Connected: ' + frame)
-        stompClient.subscribe('/topic/alarms', (notif) => {
-          const notification = JSON.parse(notif.body)
-          const notificationAction = { type: 'NOTIFICATION', value: notification}
-          this.props.dispatch(notificationAction)
-          console.log(this.props.dispatch(notificationAction))
-          //console.log(notif.title, notif.message)
-        }, (Reconnect_failed ) => console.log(Reconnect_failed ))
-      })
-    }
-
-
-
-    _onNotification(){
-      console.log('notification')
-      //const states = this.state.thumbnails.states
-      const { notification } = this.state
-      const states = notification.type
-      console.log(states)
-      switch(true){
-        case /^alarm/.test(states):
-            PushNotification.localNotification({
-              /* iOS and Android properties */
-              title: notification.type, // this.alarmeType + thumbnails.name
-              message: notification.text, // (required)
-              largeIcon: notification, // this.iconNotif
-              smallIcon: notification, // this.arrow
-              subText: notification, // this.localStockage + ' : ' + thumbnails.states
-              color: "red",
-              group:'alarm',
-              importance: 'high'
-            })
-            break;
-        case /prealarm/.test(states):
-            PushNotification.localNotification({
-              /* iOS and Android properties */
-              title: notification,
-              message: notification.text, // (required)
-              largeIcon: notification, // (optional) default: "ic_launcher"
-              smallIcon: notification, // (optional) default: "ic_notification" with fallback for "ic_launcher"
-              subText: notification, // (optional) default: none
-              color: "#fc990b", // (optional) default: system default
-              group:'prealarm',
-              importance: 'high'
-            })
-            break;
-      }
     }
 
     _recoverThumbnails() {

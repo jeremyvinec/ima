@@ -5,6 +5,7 @@ import Navigation from './src/navigation/Navigation'
 import configureStore from './src/store/configureStore'
 import { Provider } from 'react-redux'
 import { loadThumbnails } from './src/actions/thumbnailsActions.js'
+import NotifService from './src/services/NotifService'
 
 // Persister et réhydrater un magasin Redux
 import { persistStore } from 'redux-persist'
@@ -22,6 +23,7 @@ export default class App extends React.Component {
         <Provider store={store}>
           <PersistGate persistor={persistor}>
             <Navigation/>
+            <NotifService/>
           </PersistGate>
         </Provider>
     )

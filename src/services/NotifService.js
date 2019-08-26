@@ -1,9 +1,39 @@
 import React from 'react'
 import PushNotification from 'react-native-push-notification';
-import { connect } from 'react-redux'
+import SockJS from 'sockjs-client'
+import Stomp from 'stompjs'
 
-class NotifService extends React.Component{
+export default class NotifService extends React.Component{
 
+    constructor(props){
+        super(props)
+        this.state = {
+            notification: []
+        }
+    }
+
+    componentDidMount(){
+        this._socket()
+    }
+
+    _socket(){
+        var socket = new SockJS('http://172.20.1.101:8080/notifications/alarms', {
+          agentOptions: {
+            rejectUnauthorized: false
+          }
+        })
+        stompClient = Stomp.over(socket)
+        stompClient.connect({}, (frame) => {
+          this.setState({ isConnected : true, isLoading: true })
+          console.log('Connected: ' + frame)
+          stompClient.subscribe('/topic/alarms', (notif) => {
+            const notification = JSON.parse(notif.body)
+            this.setState({ notification: notification})
+            this._configure()
+            //console.log(notif.title, notif.message)
+          }, (Reconnect_failed ) => console.log(Reconnect_failed ))
+        })
+    }
 
     _configure() {
         console.log('configure')
@@ -43,11 +73,11 @@ class NotifService extends React.Component{
       _onNotification(){
         console.log('notification')
         //const states = this.state.thumbnails.states
-        const { notification } = this.props
+        const { notification } = this.state
         const states = notification.type
         console.log(states)
         switch(true){
-          case /^alarm/.test(states):
+          case /^PA/.test(states):
               PushNotification.localNotification({
                 /* iOS and Android properties */
                 title: notification.type, // this.alarmeType + thumbnails.name
@@ -60,7 +90,7 @@ class NotifService extends React.Component{
                 importance: 'high'
               })
               break;
-          case /prealarm/.test(states):
+          case /PA_PRE/.test(states):
               PushNotification.localNotification({
                 /* iOS and Android properties */
                 title: notification,
@@ -75,12 +105,11 @@ class NotifService extends React.Component{
               break;
         }
       }
-}
 
-const mapStateToProps = (state) => {
-    return{
-        notification: state.notification
+    render(){
+        return(
+            <React.Fragment/>
+        )
     }
-}
 
-export default connect(mapStateToProps)(NotifService)
+}
