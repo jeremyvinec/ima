@@ -18,8 +18,4 @@ Cette solution permet de contrôler et tracer tous les paramètres critiques dan
 * Démarrer l'Émulateur de Android Studio 
 * Exécutez- react-native run-android dans le dossier ima 
 * Si tout est configuré correctement, l’application devrait bientôt s'exécuter dans l’émulateur Android.
-<<<<<<< HEAD
 * Activer le menu développeur (Ctrl+M ou adb shell input keyevent 82), activer le mode JS Debugging & Live Reload ou Hot    Reloading pour voir les modifications en temps réel. 
-=======
-* Activer le menu développeur (Ctrl+M ou adb shell input keyevent 82), activer le mode JS Debugging & Live Reload ou Hot    Reloading pour voir les modifications en temps réel. 
->>>>>>> de0a0125dda587ecd104df80184851d7dbfff834

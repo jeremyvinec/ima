@@ -14,16 +14,17 @@ class thumbnailsApi {
     //.catch((error) => console.error(error));
   }
 
+  // https://' + searchedServeur + '/notifications/api/probes?user=' + searchedUser
   static getAllThumbnails2() {
-    return fetch('http://172.20.4.42:8081/cockpit/api/thumbnails', {
+    return fetch('https://172.20.4.46/notifications/api/probes?user=a', {
     method: 'GET',
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
-      'X-User': 'a'
+      //'X-User': searchedUser
     }
   })
-    .then((response) => response.json())
+    .then((response) => console.log(response.json()))
     //.catch((error) => console.error(error));
   }
 

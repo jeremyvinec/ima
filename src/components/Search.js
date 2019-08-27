@@ -1,6 +1,6 @@
 import React from 'react'
 import { StyleSheet, Dimensions, Animated, View, TextInput } from 'react-native';
-import thumbnailsApi from '../api/thumbnailsApi'
+import ThumbnailsList from './thumbnails/ThumbnailsList'
 
 import { connect } from 'react-redux'
 
@@ -9,41 +9,54 @@ class Search extends React.Component{
     constructor(props){
         super(props)
         this.state = {
-            thumbnails: [],
+            thumbnails: props.thumbnails,
             searchedText: '',
             isLoading: false
         }
     }
 
-    _searchThumbnails(){
-        this.setState({
-            thumbnails: [],
+    _searchThumbnails(searchedText){
+        this.setState({ 
+            searchedText: searchedText
         }, () => {
             this._loadThumbnails()
         })
     }
 
     _loadThumbnails(){
-        if(this.state.searchedText > 0){
+        console.log(this.state.searchedText)
+        const { searchedText } = this.state
+        const name = JSON.stringify(this.state.thumbnails)
+        console.log(name)
+        if(searchedText > 0){
             this.setState({ isLoading: true })
-            thumbnailsApi
+            switch(true){
+                case searchedText.test(name):
+                    console.log('ok')
+            }
         }
     }
 
 
     render(){
-        const {searchedText} = this.state;
-        console.log(this.props.thumbnails)
+        const { searchedText } = this.state
         return(
                 <View style={styles.container}>
                     <View style={styles.content_container}>
-                        <TextInput
-                            style={styles.input}
-                            placeholder='Recherche'
-                            placeholderTextColor= '#C4C4C4'
-                            onChangeText={(searchedText) => this.setState({searchedText})}
-                            onSubmitEditing={() => this._searchThumbnails()}
+                        <View>
+                            <TextInput
+                                style={styles.input}
+                                placeholder='Recherche'
+                                placeholderTextColor= '#C4C4C4'
+                                onChangeText={(searchedText) => this._searchThumbnails(searchedText)}
+                                onSubmitEditing={() => this._searchThumbnails()}
+                            />
+                        </View>
+                        <View style={styles.thumbnails_list}>
+                        <ThumbnailsList
+                            thumbnails={this._searchThumbnails}
                         />
+                    </View>
                     </View>
                 </View>
         )
@@ -67,6 +80,9 @@ const styles = StyleSheet.create({
       borderRadius: 5,
       width: Dimensions.get('window').width * 0.7,
     },
+    thumbnails_list: {
+        height: '73%',
+    }
   })
 
 const mapStateToProps = (state) => {

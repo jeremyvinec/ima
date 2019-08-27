@@ -8,9 +8,7 @@
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.6.1",
-    "express": "^4.17.1",
-    "fs": "^0.0.1-security",
-    "prop-types": "^15.7.2",
+    "isomorphic-ws": "^4.0.1",
     "react": "16.8.3",
     "react-devtools": "^3.6.1",
     "react-native": "0.59.9",
@@ -18,7 +16,6 @@
     "react-native-push-notification": "^3.1.3",
     "react-native-sparkline": "^1.0.5-beta",
     "react-native-svg": "^9.5.1",
-    "react-native-swipeout": "^2.3.6",
     "react-native-swipeview": "^1.0.3",
     "react-native-websocket": "^1.0.2",
     "react-navigation": "^3.11.0",
@@ -28,10 +25,9 @@
     "redux": "^4.0.1",
     "redux-persist": "^5.10.0",
     "redux-thunk": "^2.3.0",
-    "socket.io": "^2.2.0",
-    "socket.io-client": "2.1.1",
     "sockjs-client": "^1.3.0",
-    "stompjs": "^2.3.3"
+    "stompjs": "^2.3.3",
+    "ws": "^7.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.4.5",

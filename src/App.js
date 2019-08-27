@@ -1,11 +1,11 @@
 // App.js
 
 import React from 'react'
-import Navigation from './src/navigation/Navigation'
-import configureStore from './src/store/configureStore'
+import Navigation from './navigation/Navigation'
+import configureStore from './store/configureStore'
 import { Provider } from 'react-redux'
-import { loadThumbnails } from './src/actions/thumbnailsActions.js'
-import NotifService from './src/services/NotifService'
+import { loadThumbnails } from './actions/thumbnailsActions.js'
+import NotifService from './services/NotifService'
 
 // Persister et réhydrater un magasin Redux
 import { persistStore } from 'redux-persist'
