@@ -1,6 +1,5 @@
 import React from 'react'
 import { StyleSheet, View, Text, TouchableOpacity, Animated,  } from 'react-native'
-import PushNotification from 'react-native-push-notification'
 import Sparkline from 'react-native-sparkline'
 
 // Accéder à Navigation Prop
@@ -24,6 +23,7 @@ import PressureIcon from '../../assets/svg/PressureIcon'
 import SpeedIcon from '../../assets/svg/SpeedIcon'
 import TocIcon from '../../assets/svg/TocIcon'
 import TorIcon from '../../assets/svg/TorIcon'
+import GenericIcon from '../../assets/svg/GenericIcon'
 
 class ThumbnailsItem extends React.Component {
     constructor(props){
@@ -32,59 +32,26 @@ class ThumbnailsItem extends React.Component {
       this.color = '#fff',
       this.fontStyle = 'normal',
       this.fontWeight = 'normal',
-      this.arrow = 'ic_stat_icon_ivtracer',
-      this.iconNotif = '',
-      this.alarmeType = ''
-      this.localStockage = null,
       this.state = {
         opacity: new Animated.Value(1),
-        sectionID: null,
-        rowID: null
       }
     }
 
     componentDidMount(){
       this._backgroundColor()
-      this._iconNotif()
       this._color()
       this._arrow()
       this._animate()
-      this._localStockage()
     }
 
     componentDidUpdate(nextProps){
-      if(nextProps.thumbnails.id != this.props.thumbnails.id){
-        console.log('new id')
-        this._configure()
-      } else if(nextProps.thumbnails.states != this.props.thumbnails.states){
-        console.log('new states', this.props.thumbnails.states)
+      if(nextProps.thumbnails.states != this.props.thumbnails.states){
         //console.log('Prev props | ' + nextProps.thumbnails.states)
-        //console.log('New props | ' + this.props.thumbnails.states)
-        this._configure() // Notification
+        console.log('New props | ' + this.props.thumbnails.states)
         this._backgroundColor()
         this._color()
         this._arrow()
         this._animate()
-      } else if(nextProps.thumbnails.type != this.props.thumbnails.type){
-        console.log('new type' )
-      }
-    }
-
-    _iconNotif(){
-      type = this.props.thumbnails.type
-
-      switch(type){
-        case 'temperature': return this.iconNotif = 'ic_temperature'
-        case 'hygrometry': return this.iconNotif = 'ic_hygrometry'
-        case 'concentration': return this.iconNotif = 'ic_concentration'
-        case 'conductivity': return this.iconNotif = 'ic_conductivity'
-        case 'flow': return this.iconNotif = 'ic_flow'
-        case 'generic': return this.iconNotif = 'ic_generic'
-        case 'particles': return this.iconNotif = 'ic_particles'
-        case 'pressure': return this.iconNotif = 'ic_pressure'
-        case 'speed': return this.iconNotif = 'ic_speed'
-        case 'toc': return this.iconNotif = 'ic_toc'
-        case 'tor': return this.iconNotif = 'ic_tor'
       }
     }
 
@@ -97,7 +64,7 @@ class ThumbnailsItem extends React.Component {
         case 'concentration': return( <ConcentrationIcon/> )
         case 'conductivity': return ( <ConductivityIcon/> )
         case 'flow': return ( <FlowIcon/> )
-        case 'generic': // generic
+        case 'generic': return( <GenericIcon/> )
         case 'particles': return( <ParticlesIcon/> )
         case 'pressure': return( <PressureIcon/> )
         case 'speed': return( <SpeedIcon/> )
@@ -152,14 +119,10 @@ class ThumbnailsItem extends React.Component {
     _arrow(){
       states = this.props.thumbnails.states     
       if(states.includes('high')){
-        this.arrow = 'ic_arrowup'
-        this.alarmeType = 'Alarme haute : '
         return(
           <ArrowUpIcon/>
         )
       } else if(states.includes('low')){
-        this.arrow = 'ic_arrowdown'
-        this.alarmeType = 'Alarme basse : '
         return(
           <ArrowDownIcon/>
         )
@@ -212,98 +175,6 @@ class ThumbnailsItem extends React.Component {
           }
         ).start();
       }
-    }
-
-    _configure() {
-      PushNotification.configure({
-        // (optional) Called when Token is generated (iOS and Android)
-        onRegister: function(token){
-          //console.log(token)
-        }, //this._onRegister.bind(this),
-  
-        // (required) Called when a remote or local notification is opened or received
-        onNotification: this._onNotification(), //this._onNotification,
-  
-        // ANDROID ONLY: GCM Sender ID (optional - not required for local notifications, but is need to receive remote push notifications)
-        senderID: '218075749940',
-  
-        // IOS ONLY (optional): default: all - Permissions to register.
-        permissions: {
-          alert: true,
-          badge: true,
-          sound: true
-        },
-  
-        // Should the initial notification be popped automatically
-        // default: true
-        popInitialNotification: true,
-  
-        /**
-          * (optional) default: true
-          * - Specified if permissions (ios) and token (android and ios) will requested or not,
-          * - if not, you must call PushNotificationsHandler.requestPermissions() later
-          */
-        requestPermissions: true,
-      });
-    }
-
-    _onNotification() {
-      console.log('notification')
-      thumbnails = this.props.thumbnails
-      states = this.props.thumbnails.states
-      this.lastId++;
-
-      switch(true){
-        case /^alarm/.test(states):
-            PushNotification.localNotification({
-              /* iOS and Android properties */
-              title: this.alarmeType + thumbnails.name, // (optional)
-              message: thumbnails.type + ' : ' + thumbnails.value + ' ' + thumbnails.unit, // (required)
-              largeIcon: this.iconNotif, // (optional) default: "ic_launcher"
-              smallIcon: this.arrow, // (optional) default: "ic_notification" with fallback for "ic_launcher"
-              subText: this.localStockage + ' : ' + thumbnails.states, // (optional) default: none
-              color: "red", // (optional) default: system default
-              group:'alarm',
-              importance: 'high'
-            })
-            break;
-        case /prealarm/.test(states):
-            PushNotification.localNotification({
-              /* iOS and Android properties */
-              title: this.alarmeType + thumbnails.name, // (optional)
-              message: thumbnails.type + ' : ' + thumbnails.value + ' ' + thumbnails.unit, // (required)
-              largeIcon: this.iconNotif, // (optional) default: "ic_launcher"
-              smallIcon: this.arrow, // (optional) default: "ic_notification" with fallback for "ic_launcher"
-              subText: this.localStockage + ' : ' + thumbnails.states, // (optional) default: none
-              color: "#fc990b", // (optional) default: system default
-              group:'prealarm',
-              importance: 'high'
-            })
-            break;
-      }
-
-      
-
-      // Clique sur la notification
-      const { navigation, displayRelease } = this.props
-      PushNotification.configure({
-        onNotification: function(notification){
-          //console.log(notification.userInteraction)
-          const clicked = notification.userInteraction
-          if(clicked){
-            navigation.navigate('Release') + displayRelease(thumbnails.name)
-          }
-        }
-      })
-
-    }
-
-    _localStockage(){
-      const id = this.props.thumbnails.id
-      const regex = /[.]/gi;
-      const replace = id.replace(regex, ' ')
-      const string = replace.split(' ')
-      this.localStockage = string[5]
     }
 
     render() {
@@ -386,10 +257,4 @@ class ThumbnailsItem extends React.Component {
     }
   });
 
-  const mapStateToProps = (state) => {
-    return {
-      //thumbnailsItem: state.thumbnailsItem
-    }
-  }
-
-  export default connect(mapStateToProps)(withNavigation(ThumbnailsItem))
+  export default withNavigation(ThumbnailsItem)

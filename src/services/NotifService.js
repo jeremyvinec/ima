@@ -158,6 +158,19 @@ export default class NotifService extends React.Component{
               })
               break;
         }
+
+        // Clique sur la notification
+        const { navigation, displayRelease } = this.props
+        PushNotification.configure({
+          onNotification: function(notification){
+            //console.log(notification.userInteraction)
+            const clicked = notification.userInteraction
+            if(clicked){
+              navigation.navigate('Release') + displayRelease(thumbnails.name)
+            }
+          }
+        })
+        
       }
 
     render(){

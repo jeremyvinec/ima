@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View, Text, Image, TouchableOpacity, Dimensions, ActivityIndicator, TextInput } from 'react-native'
+import { StyleSheet, View, Text, Image, TouchableOpacity, Dimensions, ActivityIndicator } from 'react-native'
 import ThumbnailsList from './ThumbnailsList'
 
 import {NavigationEvents} from 'react-navigation';
@@ -32,25 +32,18 @@ class Thumbnails extends React.Component {
 
     _setInterval(){
       this.interval = setInterval(this._recoverThumbnails, 5000)
-      //this.interval = setInterval(this._recoverCockpit, 5000)   
     }
 
     _recoverThumbnails() {
       console.log('update')
       const { searchedServeur, searchedPort, searchedUser } = this.props
-      thumbnailsApi.getAllThumbnails(searchedServeur, searchedPort, searchedUser).then(data => {
+      thumbnailsApi.getAllThumbnails( searchedServeur, searchedPort, searchedUser ).then(data => {
         this.setState({
-          thumbnails: data.thumbnails,
+          thumbnails: data.probes,
           isLoading: false,
           isConnected: false
         })
       })
-    }
-
-    _recoverCockpit() {
-      console.log('update')
-      fetch('https://172.20.4.46/notifications/api/probes?user=a')
-      .then((response) => console.log(response.json))
     }
 
     _displayLoading() {
