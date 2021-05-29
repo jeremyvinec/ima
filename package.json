@@ -27,7 +27,7 @@
     "redux-thunk": "^2.3.0",
     "sockjs-client": "^1.3.0",
     "stompjs": "^2.3.3",
-    "ws": "^7.1.2"
+    "ws": "^7.4.6"
   },
   "devDependencies": {
     "@babel/core": "^7.4.5",
